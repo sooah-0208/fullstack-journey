@@ -54,7 +54,6 @@ background-color: black; }
 - ~= 단어 일치
   
 ```
-``
 a[href^="https"] {background-color: purple; color:#fff;}
 a[href$="net/"]{color:red;}
 li[title*="ip"]{color:aqua;}  
@@ -63,7 +62,7 @@ li[title*="ip"]{color:aqua;}
       net/으로 끝나는 항목은 빨간 글씨로 주세요
       title항목에 ip라는 글자를 포함하면 아쿠아색 글씨로 주
 ```
-``
+
 =>❓여기titletle`속성은 마우스를 올렸을 때 말풍선(툴팁)이 뜨도록 하는 속성!  
 
 ## link / button in style
@@ -72,7 +71,7 @@ a:hover{}r{}` 마우스를 올렸을 때 스타일 설정
 a:focus{}s{}` Tab을 누르면 커서가 이동하는데 이때 커서 이동시 보이는 스타일 설정
 a:`a:` 에a `a`는 링크이기때문 다른 항목에 주고싶으: `:`앞div/p/li/li`등으로 바꿔주
 ```
-`/* 방문하지않은 link */
+/* 방문하지않은 link */
 *	a:link{color:#0f0;
 0		text-decoration: none;}
 
@@ -89,10 +88,17 @@ a:`a:` 에a `a`는 링크이기때문 다른 항목에 주고싶으: `:`앞div/p
 }	/* 탭키 */
 *	a:focus{background-color: #ff0;}
 ```
-``
 
 ## ~를 찾아서 적용 `(?): :(?)`
 - 선택자 앞/뒤 스타일 변경after / beforeore`(h1): :beforeore(h1): :afterter`의 형식으로 적용
 - 드래그했을 때:selectionion`
 - 첫 글자만:first-letterter`
 - 등등 다양한 선택자가 존재함
+
+# size 조절
+## [단위]  
+절대값 단위(인쇄용)     : cm, mm, pt(포인트), pc(파이카)  
+상대값 단위(웹, 스크린) : px(1픽셀을 1로 하는 단위),  
+						em(~배, 상위 요소 기준),  
+						rem(~배, 최상위 요소[html] 기준, HTML5 추가)  
+						%(비율, 상위 요소 기준)  
