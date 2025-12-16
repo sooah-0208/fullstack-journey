@@ -91,8 +91,8 @@ a:`a:` 에a `a`는 링크이기때문 다른 항목에 주고싶으: `:`앞div/p
 
 ## ~를 찾아서 적용 `(?): :(?)`
 - 선택자 앞/뒤 스타일 변경after / beforeore`(h1): :beforeore(h1): :afterter`의 형식으로 적용
-- 드래그했을 때:selectionion`
-- 첫 글자만:first-letterter`
+- 드래그했을 때:`selectionion`
+- 첫 글자만:`first-letterter`
 - 등등 다양한 선택자가 존재함
 
 # size 조절
