@@ -32,22 +32,22 @@ background-color: black; }
   Hello
 </p>
 ```
-이렇게 넣으면 최종적으로 `배경색 black / 글씨색 red`가 채택됨
+이렇게 넣으면 최종적으로 `배경색 black / 글씨색 red`가 채택됨  
 
 
 
 ## 🔹span
 - span{]을 여러개 설정하면 마지막 설정만 적용됨
 - div>span {]은 div 자식으로 들어간 span에 적용되기에 위랑 다르게 적용 가능함
-- #ex span: ex는 id // div id가 ex인 것 중 span항목에 적용
+- #ex span: ex는 id // div id가 ex인 것 중 span항목에 적용  
 🤔 div.first-class>span{background-color: #ff0;]   
 		#ex span{background-color: aqua;]  
-  얘는 왜 aqua만 적용되나요?? 
-  => span의 기본 속성! 마지막 설정만 적용되는 속성 때문!
+  얘는 왜 aqua만 적용되나요??  
+  => span의 기본 속성! 마지막 설정만 적용되는 속성 때문!  
 
 ### 🔹선택자 사용법 `[]`
-- 기본 형태a[href?="?"]{?}"`
-- = 전체 일치
+- 기본 형태a[href?="?"]{?}"`  
+- = 전체 일치  
 - ^= 시작하는
 - $= 끝나는
 - *= 일부 문자 (단어 중 일부 문자)
@@ -60,16 +60,16 @@ li[title*="ip"]{color:aqua;}
 
 ⭐해석: https로 시작하는 항목은 보라색배경에 흰 글씨로 주세요
       net/으로 끝나는 항목은 빨간 글씨로 주세요
-      title항목에 ip라는 글자를 포함하면 아쿠아색 글씨로 주
+      title항목에 ip라는 글자를 포함하면 아쿠아색 글씨로 주세요
 ```
 
 =>❓여기titletle`속성은 마우스를 올렸을 때 말풍선(툴팁)이 뜨도록 하는 속성!  
 
 ## 🔹link / button in style
-text-decoration: none;ne;` 밑줄 없애는 속성
-a:hover{}r{}` 마우스를 올렸을 때 스타일 설정
-a:focus{}s{}` Tab을 누르면 커서가 이동하는데 이때 커서 이동시 보이는 스타일 설정
-a:`a:` 에a `a`는 링크이기때문 다른 항목에 주고싶으: `:`앞div/p/li/li`등으로 바꿔주
+text-decoration: none;ne;` 밑줄 없애는 속성  
+a:hover{}r{}` 마우스를 올렸을 때 스타일 설정  
+a:focus{}s{}` Tab을 누르면 커서가 이동하는데 이때 커서 이동시 보이는 스타일 설정  
+a:`a:` 에 `a`는 링크이기 때문에 다른 항목에 주고싶으면 `:`앞`div/p/li/li`등으로 바꿔주면 됨
 ```
 /* 방문하지않은 link */
 *	a:link{color:#0f0;
@@ -90,8 +90,8 @@ a:`a:` 에a `a`는 링크이기때문 다른 항목에 주고싶으: `:`앞div/p
 ```
 
 ## 🔹~를 찾아서 적용 `(?): :(?)`
-- 선택자 앞/뒤 스타일 변경after / beforeore`(h1): :beforeore(h1): :afterter`의 형식으로 적용
-- 드래그했을 때:`selectionion`
+- 선택자 앞/뒤 스타일 변경 after/beforeore `(h1): :beforeore / (h1): :afterter`의 형식으로 적용
+- 드래그 했을 때:`selectionion`
 - 첫 글자만:`first-letterter`
 - 등등 다양한 선택자가 존재함
 
