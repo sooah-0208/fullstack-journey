@@ -35,6 +35,12 @@
 
 # 다른 장소의 사람에게 공유할 때
 1. github에서 new repo 제작
-2. 파일 이미지와 같이 제작
+2. readme.md 하나 만들어줌
+3. vs코드로 만든 파일 이미지와 같이 하나의 상위폴더로 묶어줌
+   **이때 꼭!! 메인화면을 `index.html`로 지정**
 <img width="737" height="423" alt="image" src="https://github.com/user-attachments/assets/54c7b498-5284-46f4-aa27-1bb6cbeaae9a" />
-
+4. code에 uplode flies로 폴더 업로드
+5. setting -> pages -> `soure`를 delay blunch로 선택 -> `branch`를 main으로 변경
+6. action에서 링크 클릭
+7. 추가로 /폴더명 입력하면 끝!!
+   
