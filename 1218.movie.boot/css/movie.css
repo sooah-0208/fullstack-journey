@@ -1,0 +1,35 @@
+
+/* 상단 글자 부분 */
+
+h2{font-weight: 600;
+    color: #6695e0;
+    font-size: 32px;
+}
+.type
+    {
+    font-size: 17px;
+    width: 70px;
+   }
+p {color: #ff79b0;
+    font-weight:500;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+img{
+    width: 280px;
+}
+
+/* 하단 설명부 */
+.movie-explain {
+    color: #ff79b0;
+    font-size: 17px;
+    }
+.retry,
+.no-search{text-align: center;
+    margin-top: 5px;
+}
+.retry{
+    font-size: 17px;
+    margin-top: 5px;
+}
