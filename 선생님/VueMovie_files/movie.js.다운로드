@@ -1,0 +1,67 @@
+function view(list) {
+  let html = "";
+  for(const row of list) {
+    html += `<div class="movie">
+              <a href="movie.html?imdbID=${row.imdbID}" class="movie-link">
+                <div class="product-image">
+                  <img src="${row.Poster}" alt="Movie Poster"/>
+                  <div class="type">${row.Type}</div>
+                </div>
+                <div class="detail">
+                  <p class="year">${row.Year}</p>
+                  <h3>${row.Title}</h3>
+                </div>
+              </a>
+            </div>`;
+  }
+  document.querySelector(".movies-list").innerHTML = html;
+}
+function movies(url) {
+  fetch(url)
+  .then(x => x.json())
+  .then(y => {
+    if(y.Response === 'True') view(y.Search);
+  });
+}
+function search(e){
+  e.preventDefault();
+  const keyword = e.target.keyword.value;
+  const url = `https://www.omdbapi.com?apikey=2815efbb&s=${keyword}`;
+  if(keyword) movies(url);
+}
+function getQueryParam(name) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+}
+function detail(data) {
+  let html = "";
+  if(data.Response === 'False') {
+    html = `<div class="text-center">
+        <h2>선택한 내용이 없습니다.</h2>
+        <p>다시 검색하세요.</p>
+      </div>`;
+  } else {
+    html = `
+        <div>
+          <h2>${data.Title}<span>${data.Type}</span></h2>
+          <p>${data.Year}</p>
+          <p>${data.Country}</p>
+          <img src="${data.Poster}" />
+          <p>${data.Plot}</p>
+        </div>`;
+  }
+  document.querySelector(".movie-detail").innerHTML = html;
+}
+function getMovie(url) {
+  fetch(url)
+  .then(x => x.json())
+  .then(y => detail(y));
+}
+function load() {
+  document.getElementById("movie-search").addEventListener("submit", search);
+}
+function movie() {
+  const imdbID = getQueryParam("imdbID");
+  const url = `https://www.omdbapi.com?apikey=2815efbb&i=${imdbID}&plot=full`;
+  getMovie(url);
+}
