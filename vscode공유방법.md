@@ -1,5 +1,21 @@
-# 다른 PC에서 다운로드 할 때
+# 1️⃣ 다른 장소의 사람에게 공유할 때
+1. github에서 new repo 제작
+2. readme.md 하나 만들어줌
+3. vs코드로 만든 파일 이미지와 같이 하나의 상위폴더로 묶어줌
+   **이때 꼭!! 메인화면을 `index.html`로 지정**
+<img width="737" height="423" alt="image" src="https://github.com/user-attachments/assets/54c7b498-5284-46f4-aa27-1bb6cbeaae9a" />
+4. code에 uplode flies로 폴더 업로드
+5. setting -> pages -> `soure`를 delay blunch로 선택 -> `branch`를 main으로 변경
+6. action에서 링크 클릭
+7. 추가로 /폴더명 입력하면 끝!!
 
+## 메인 index에 a태그만 계속 추가해서 만드는 것도 가능!
+index ui 예쁘게 짜서  
+각 프로젝트마다 클릭해 들어갈 수 있게 하는 방법임  
+-> 💡포폴 제출할 때 이게 좋겠지요?
+   
+
+# 2️⃣ 다른 PC에서 다운로드 할 때
 
 1. 필요한 파일(html,md등) zip으로 저장
 2. vsCODE에서 teminal 열기
@@ -28,19 +44,9 @@
 4. 다른 PC의 웹에서 복사한 주소 입력 +내 vsCode Port(:5500)
 5. 원하는 파일 다운받으면 끝~
 
-# 같은 공유기 사용 중인 곳에서 열 때
+# 3️⃣ 같은 공유기 사용 중인 곳에서 열 때
 1. ipconfig로 ip복사 후 :5500(포트 번호)
 2. 해당 기기에 ip주소 입력
    **특정 폴더만 보여주고싶을 떈** 포트번호 뒤에 /폴더명/파일명 입력하면 됨
 
-# 다른 장소의 사람에게 공유할 때
-1. github에서 new repo 제작
-2. readme.md 하나 만들어줌
-3. vs코드로 만든 파일 이미지와 같이 하나의 상위폴더로 묶어줌
-   **이때 꼭!! 메인화면을 `index.html`로 지정**
-<img width="737" height="423" alt="image" src="https://github.com/user-attachments/assets/54c7b498-5284-46f4-aa27-1bb6cbeaae9a" />
-4. code에 uplode flies로 폴더 업로드
-5. setting -> pages -> `soure`를 delay blunch로 선택 -> `branch`를 main으로 변경
-6. action에서 링크 클릭
-7. 추가로 /폴더명 입력하면 끝!!
-   
+
