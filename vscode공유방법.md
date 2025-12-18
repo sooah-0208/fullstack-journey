@@ -34,3 +34,7 @@
    **특정 폴더만 보여주고싶을 떈** 포트번호 뒤에 /폴더명/파일명 입력하면 됨
 
 # 다른 장소의 사람에게 공유할 때
+1. github에서 new repo 제작
+2. 파일 이미지와 같이 제작
+<img width="737" height="423" alt="image" src="https://github.com/user-attachments/assets/54c7b498-5284-46f4-aa27-1bb6cbeaae9a" />
+
