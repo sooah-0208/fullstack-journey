@@ -1,4 +1,7 @@
-# Javascript(객체 지향 프로그래밍 OOP)
+# Javascript(ECMAScript)
+- 객체 지향 프로그래밍 OOP
+- `JS` 혹은 `ES`라고 부름
+- 주로 frontend에 사용하는 프로그램(백엔드엔 한계가 있음)
 
 script의 src 확인하는 방법: 콘솔->Sources->js파일
 
@@ -29,12 +32,6 @@ script도 body처럼 스크립트 순서대로 출력이 됨
 		- function
 		- ...
 
-값 비교시
-==: 안에 요소만 비교
-===: 자료형도 비교
-ex) 5=="5": true
-    5==="5": false
-
 ### [변수선언]
  var 변수명; (형식)
 ```
@@ -46,4 +43,10 @@ document.write('<br>');
 ```
 
 typeof: 변수가 가진 자료형이 뭐인지
+
+#### 값 비교시
+==: 안에 요소만 비교
+===: 자료형도 비교
+ex) 5=="5": true
+    5==="5": false
 
