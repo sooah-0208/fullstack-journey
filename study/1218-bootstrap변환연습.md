@@ -19,6 +19,7 @@
 
 ## 2️⃣ Bootstrap시 충돌나지 않도록 class명 정리하기
 - `btn`,`p`등과 같이 bootstrap에 있는 개념의 class를 변경.
+- ctrl+H 눌러 Find+Replace 창 열면 하나 찾고 전부 바꿀 수 있음
 - 원래는 임의대로 class 명을 정했는데 실무에서 쓰는 class명이 있다는 것을 알고 변경.
 - 🎉**CSS class 나열방식**: `first .title .exps`처럼 모든 css를 사용할 때 큰 부모>부모>자식 형식으로 포함시켜야하는 줄 알고 전부 나열식으로 작성하였음 -> 그러나 하위 자식의 class는 겹치고, 부모 class가 다를 때 사용한다는 것을 알았음 => 최종적으로 파일 css 정리함
 ```
