@@ -92,9 +92,7 @@ for(1️⃣){
 ```
 for (let i=1 ; i<=9; i++){
     for (let j=1 ; j<=9; j++){
-console.log( `${i}*${j}=${i*j)`);
-        }
-console.log();
+console.log( `${i}*${j}=${i*j}`);
 }
 ```
 하면 구구단 식이 그대로 나옴
