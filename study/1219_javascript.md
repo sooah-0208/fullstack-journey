@@ -1,4 +1,5 @@
 # ✅Javascript(ECMAScript)
+**동적인 웹 페이지 구현을 위함**
 - 객체 지향 프로그래밍 OOP
 - `JS` 혹은 `ES`라고 부름
 - 주로 frontend에 사용하는 프로그램(백엔드엔 한계가 있음)
