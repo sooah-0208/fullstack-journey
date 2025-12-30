@@ -29,6 +29,12 @@
 - 명령어는 <>code누르면 복붙할 수 있게 뜸
 `git clone https://github.com/TeamChoiKim/20251230T2.git`
 
+
+### 🛠 react 실행하기
+`npm create vite 파일명`  
+*대문자는 사용 안됨!!!!  
+이걸로 넘겨서 react 실행하면 댐~~
+
 ## 3️⃣ 신규 브랜치 연결하기 🌿
 ### 🔄 1. 원격 브랜치 정보 가져오기
 ```
@@ -50,20 +56,19 @@ git checkout 신규브런치이름
   - develop
   - 다른 issue 브랜치
 
-##  react 실행하기
-npm create vite@latest 20251230T2
-*대문자는 사용 안됨!!!!
 
-이걸로 넘겨서 react 실행하면 댐~~
-
-파일 올리기
+## 6️⃣ 작업 확인하는 방법 ✅
+1. 내가 수정한 사항이 있을 때 파일 올리기
+```
 git add .
 git commit -m "커밋설명"
 git push
+```
+위 코드 하나씩 입력하면 push 됨
+2. 상대가 수정한 파일 받기
+상대 branch로 이동 후
+`git pull`
 
-파일 받기
-git pull
 
-
-업데이트 항목
+## ⭐ 업데이트 항목 코드
 <img width="659" height="263" alt="image" src="https://github.com/user-attachments/assets/0be6d573-b305-4300-ad8a-2a781384de3a" />
