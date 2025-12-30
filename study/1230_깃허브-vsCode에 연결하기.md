@@ -55,3 +55,11 @@ npm create vite@latest 20251230T2
 *대문자는 사용 안됨!!!!
 
 이걸로 넘겨서 react 실행하면 댐~~
+
+파일 올리기
+git add .
+git commit -m "커밋설명"
+git push
+
+파일 받기
+git pull
