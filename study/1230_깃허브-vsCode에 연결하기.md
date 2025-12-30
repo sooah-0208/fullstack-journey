@@ -84,12 +84,12 @@ SPA(Single Page Application)
 - `/about` → 소개 페이지 보여주기
 - `/contact` → 연락처 페이지 보여주기
 
-### 설치명령어
+### 💾설치명령어
 ```
 npm i react-router
 ```
 
-### Router 설정 내용
+### 🖥Router 설정 내용
 ```
 import React from "react";
 import ReactDOM from "react-dom/client";
