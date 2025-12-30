@@ -72,3 +72,40 @@ git push
 
 ## ⭐ 업데이트 항목 코드
 <img width="659" height="263" alt="image" src="https://github.com/user-attachments/assets/0be6d573-b305-4300-ad8a-2a781384de3a" />
+
+
+# Router
+## 1️⃣ 라우터(Router)의 역할
+SPA(Single Page Application)  
+즉 한 페이지 안에서 모든 화면이 바뀌는 구조
+-URL이 바뀌어도 페이지 전체를 새로고침하지 않고, 컴포넌트만 바꿔서 보여주는 것이 라우터의 핵심 역할
+
+- `/` → 메인 페이지 보여주기
+- `/about` → 소개 페이지 보여주기
+- `/contact` → 연락처 페이지 보여주기
+
+### 설치명령어
+```
+npm i react-router
+```
+
+### Router 설정 내용
+```
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <div>Hello World</div>,
+  },
+]);
+
+const root = document.getElementById("root");
+
+ReactDOM.createRoot(root).render(
+  <RouterProvider router={router} />,
+);
+```
