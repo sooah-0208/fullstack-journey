@@ -63,3 +63,7 @@ git push
 
 파일 받기
 git pull
+
+
+업데이트 항목
+<img width="659" height="263" alt="image" src="https://github.com/user-attachments/assets/0be6d573-b305-4300-ad8a-2a781384de3a" />
