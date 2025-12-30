@@ -29,3 +29,9 @@
 
 ```bash
 git clone https://github.com/TeamChoiKim/20251230T2.git
+
+## 3 react 실행하기
+npm create vite@latest 20251230T2
+*대문자는 사용 안됨!!!!
+
+이걸로 넘겨서 react 실행하면 댐~~
