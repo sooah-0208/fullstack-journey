@@ -26,6 +26,7 @@
 ### 🖥️ 2. 터미널 열기 & Repository 가져오기 (clone)
 - 해당 폴더에서 **터미널 열기**
 - 아래 명령어 입력 👇
+- 명령어는 <>code누르면 복붙할 수 있게 뜸
 `git clone https://github.com/TeamChoiKim/20251230T2.git`
 
 ## 3️⃣ 신규 브랜치 연결하기 🌿
