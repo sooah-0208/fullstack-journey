@@ -27,8 +27,8 @@
 - 해당 폴더에서 **터미널 열기**
 - 아래 명령어 입력 👇
 
-```bash
-git clone https://github.com/TeamChoiKim/20251230T2.git
+`git clone https://github.com/TeamChoiKim/20251230T2.git`
+
 
 ## 3 react 실행하기
 npm create vite@latest 20251230T2
