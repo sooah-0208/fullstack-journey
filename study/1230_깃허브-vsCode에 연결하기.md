@@ -26,11 +26,30 @@
 ### 🖥️ 2. 터미널 열기 & Repository 가져오기 (clone)
 - 해당 폴더에서 **터미널 열기**
 - 아래 명령어 입력 👇
-
 `git clone https://github.com/TeamChoiKim/20251230T2.git`
 
+## 3️⃣ 신규 브랜치 연결하기 🌿
+### 🔄 1. 원격 브랜치 정보 가져오기
+```
+git fetch origin
+git checkout 신규브런치이름
+```
 
-## 3 react 실행하기
+한번에 두줄 다 입력해도 됨
+
+## 4️⃣ 브랜치 연결 확인 방법 ✅
+`git branch`
+* 표시가 되어 있고 색이 들어온 브랜치가
+👉 현재 연결된 브랜치
+
+## 5️⃣ 작업 완료 후 다른 브랜치로 이동 🔀
+`git checkout [이동할브랜치명]`
+- 예시
+  - main
+  - develop
+  - 다른 issue 브랜치
+
+##  react 실행하기
 npm create vite@latest 20251230T2
 *대문자는 사용 안됨!!!!
 
