@@ -28,10 +28,11 @@
 - 아래 명령어 입력 👇
 - 명령어는 <>code누르면 복붙할 수 있게 뜸
 `git clone https://github.com/TeamChoiKim/20251230T2.git`
+- repo가져온 파일로 이동하기: `cd repo명`
 
 
 ### 🛠 react 실행하기
-`npm create vite 파일명`  
+`npm create vite .`        //공백+. 하면 현재 폴더라는 의미
 *대문자는 사용 안됨!!!!  
 이걸로 넘겨서 react 실행하면 댐~~
 
@@ -85,11 +86,17 @@ SPA(Single Page Application)
 - `/contact` → 연락처 페이지 보여주기
 
 ### 💾설치명령어
+참고 사이트   
+[react-router](https://reactrouter.com/start/declarative/installation)
+
+실행 방법이 3가지 있음. 마지막 Declarative Mode 사용하는 게 쉬울 수 있음
+
 ```
 npm i react-router
 ```
 
 ### 🖥Router 설정 내용
+**Data Mode**
 ```
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -108,4 +115,24 @@ const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(
   <RouterProvider router={router} />,
 );
+```
+
+**Declarative Mode**
+```
+import { BrowserRouter, Routes, Route } from "react-router";
+import Page1 from "@pages/Page1.jsx"
+import Page2 from "@pages/Page2.jsx"
+
+const Router = () =>{
+  return (
+   <BrowserRouter>
+   <Routes>
+    <Route path ="/" element={<Page1 />} />
+    <Route path ="/page2" element={<Page2 />} />
+  
+   </Routes>
+   </BrowserRouter>
+  )
+}
+  export default Router
 ```
