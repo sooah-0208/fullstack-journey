@@ -51,16 +51,38 @@ for ( let 인덱스 = 0 ; 인덱스 < a.length ; 인덱스 = 인덱스+1 ) {
 `인덱스`를 변수로 설정해도 출력값은 똑같음   
 
 ### 💦 for문이 너무 길어요!  
-배열처럼 객체일 때는 for in/for of 사용 가능  
-=> `for in`
-`for(const/let index in(index) a){  
-console.log (in)
-}`  
-in=index(인덱스를 꺼낸다) -> 그래서 0,1,2...나옴  
-`for of`  => 값만 원해요!   
-`for(const v(value) of a){  
-console.log( v );  
-}`
+배열, 객체일 때는 for in/for of 사용 가능  
+=> `for in`: 객체의 key 꺼내는 반복문
+```
+const man = {
+  name: "Mike",
+  age: 20
+}
+
+for (let key in man) {    // 여기서 let은 생략 가능하고 key도 변수라 아무 단어나 써도 됨
+  console.log(key);   //name, age
+}
+
+for (a in man) {
+  console.log(man[a]); // "Mike", 20
+}
+
+// 키, 벨류 같이 꺼낼 때
+for (let key in man) {
+  console.log(`${key}: ${man[key]}`);
+}
+```  
+
+`for of`  => 값만 원해요!
+- 배열, 문자열, Set, Map, NodeList 등에 사용 가능
+```
+const arr = [10, 20, 30];
+
+for (let v of arr) {
+  console.log(v);   // 10, 20, 30
+}
+```
+
 ```
 ex)
 1)  const a = [1,2,3,4,5]
