@@ -87,19 +87,62 @@ let age = 27
 
 ## 📦 변수
 
-## 💡 할당과 선언
-변수를 만드는 것 = 선언 / 변수에 값을 넣는 것 = 할당  
+## 💡 변수의 생성 과정
+1. 선언 단계: 변수를 만드는 것
+2. 초기화 단계: 변수에 처음으로 값을 할당하는 것
+3. 할당 단계: 실제로 값이 들어감(🤔초기화랑 뭐가 달라요? = 할당은 재할당이라는 것이 가능하지만 초기화는 가장 최초의 값을 갖는 순간임)
+```  
 var age;        // 선언  
 var age = 20;   // 선언 + 할당
+```
+
+* var : 선언+초기화 -> 할당
+* let : 선언 -> 초기화 -> 할당
+* const : 선언+초기화+할당
+```
+const age; 
+age = 20;    ///이렇게 불가능. 오류 발생
+const age =20; //이렇게만 사용 가능. 할당까지 이뤄져야해서
+```
 
 ### 🧩 변수 선언
+* 호이스팅  
+: 스코프 내부 어디서든 변수 선언은 최상위에 선언된 것 처럼 행동
+(**but** 할당은 호이스팅 되지 않아 값이 들어가진 않고 undefined가 됨 // 오류가 나지 않을 뿐)
+* Temporal Dead Zone(=TDZ)
+: 일시적 사각지대  
+let/const로 선언한 변수가 선언은 되었지만 초기화 전까지 접근할 수 없는 구간
+* var → 선언 + 초기화(undefined)까지 같이 올라감
+* let, const → 선언만 올라가고 초기화는 안 됨(그래서 오류 발생)
+
+```
+console.log(a); // ❌ ReferenceError
+let a = 10;
+
+// 호이스팅 단계
+// a는 존재하지만 아직 초기화 안 됨 (TDZ)
+
+console.log(a); // ❌ 접근 불가
+a = 10;         // 여기서 TDZ 종료
+
+//var 비교
+
+console.log(x); // undefined
+var x = 10;
+console.log(y); // ❌ ReferenceError (TDZ)
+let y = 10;
+```
+
+
 
 #### var
-- 함수 스코프
+- 함수 스코프: 함수내부를 제외하고 다른 블록에서 선언하면 블록 밖에서 사용 가능함
+- 한번 선언된 변수를 다시 선언할 수 있음
 - 값 변경 가능
+- 선언 전에 사용해도 호이스팅됨
 
 #### let / const
-- 블록 스코프
+- 블록 스코프: 함수, if문, for문, while문..등 블록 내부에서 선언한 변수는 블록 밖 범위에서 사용할 수 없음
 - ES6 이후 권장
 
 #### let 변수 = 값
@@ -590,6 +633,64 @@ const Jane = {
 Jane은 값이 없어 undefined == false라서 if조건이 참이 아니라 true를 반환함
 그럴 때!! ` if(!("age" in user) || user.age<20)`을 추가해줘야함
 
+### 객체 프로퍼티 형식(문자열 & Symbol)
+#### 1. 문자형: 문자로 만든 property key
+- key 이름이 문자형인 경우를 이름
+- 우리가 자주 사용하는 {name: "1"} 이런 형태
+- 반환 시 "name" 이렇게 문자형으로 반환해줌
+- 접근할 때도 문자형으로 접근 가능: obj["name"]  // -> "1"
+
+#### 2. Symbol: 자료형의 일종 / 유일한 식별자를 만들 때 사용(id와 같은 느낌)
+- `const a = Symbol(설명 혹은 이름);` 형태
+- 객체에 “절대 겹치지 않는 숨겨진 key”를 만들기위해 사용
+```
+const a = Symbol("id")
+const b = Symbol("id")
+
+a === b; => false
+a == b; => false
+
+설명이 똑같아도 유일하기 때문에 다른 값으로 인식함
+```
+- method로 접근 할 수 없음(숨겨지는 느낌)
+- 언제 쓰면 좋을까?
+1️⃣ 라이브러리 / 공용 객체 확장할 때  
+다른 사람이 만들어둔 객체에 key를 추가하고 싶으나 해당 key가 있는지 없는지 모를 경우 덮어씌우지 않기 위해 사용함  
+:DOM 요소, 전역 객체, 다른 사람 코드 👉 절대 충돌 안 남  
+2️⃣ 내부용 데이터 숨길 때  
+완전한 private은 아니지만 실수로 접근하는 걸 방지  
+3️⃣ “진짜로 유일해야 하는 key”  일 때
+
+*Symbol 없을 때*
+![alt text](image.png)
+
+이처럼 보이고 싶지 않은 내용을 사용자가 보게 됨  
+
+*Symbol 있을 때*
+![alt text](image-2.png)
+
+
+- 전역변수처럼 쓰고싶다면?(심볼을 이름처럼 사용할 때)
+`Symbol.for(설명)`  
+같은 `Symbol.for(설명)`을 쓰는 변수는 같은 값으로 인식함(a==b / a===b)
+설명(이름)을 알고싶다면 `Symbol.keyFor(a)`  --> "설명"
+- 🤔 왜 id말고 Symbol을 쓰나요??? 
+```
+const user = { id: 1, name: "mike" };
+const extra = { id: 999, age: 20 };
+
+const merged = Object.assign({}, user, extra);
+
+이렇게 두 객체를 병합하는 경우
+
+{
+  id: 999,   // ❗이처럼 기존 id가 덮어씌워짐
+  name: "mike",
+  age: 20
+}
+```
+
+
 ### method
 - 객체의 프로퍼티 중 함수를 이르는 말
 ```
@@ -602,6 +703,152 @@ const Mike = {
 }
 ```
 - `: function`은 생략 가능함
+
+### 생성자 함수
+* 객체를 여러개 만들어야할 때 사용
+- new연산차로 함수 호출하여 함수에 값을 넣어주는 역할
+* 형식: **첫 글자는 대문자**
+
+```
+function User(name,age){
+  this.name = name;
+  this.age = age;
+}
+
+let user1 = newUser('A',10);
+let user2 = newUser('B',20);
+let user3 = newUser('C',30);
+```
+- 작동 과정
+```
+function User(name,age){
+    *this = {}  -------> this에 빈 객체 만들어 할당함
+  this.name = name;
+  this.age = age;    --> User실행하며 this의 프로퍼티 할당함
+    *return this; -----> this 반환함
+}
+```
+
+- 사용 예시
+```
+function Item(name, price) {
+        this.name;
+    this.price;
+    this.showPrice = function () {
+        console.log(`가격은 ${price}임.`);        
+    }
+    
+}
+
+const item2 = new Item('인형', 80000)
+
+console.log(item2.showPrice()) //가격은 80000임.
+```
+---
+
+### Computed property = 계산된 프로퍼티
+```
+let a = 'age'
+
+const user = {
+  name: 'mike',
+  age: 30,      //age->[a]
+}
+```
+- 여기서 user의 age를 `[a]`로 바꿔주면 변수 a에 할당된 값이 들어감
+- 식 자체에 넣는 것도 가능함
+```
+const user = {
+  [1+4]: 20,
+  ['안'+'녕"]: "안녕하세요",
+}
+
+// user -->{5: 20, 안녕: "안녕하세요"}
+```
+---
+
+### Object.Method
+객체에서 사용할 수 있는 메소드
+1. 객체 복제
+- const 새변수 = Object.assign({초기값},기존변수=매개변수)  
+```
+const newUser = Objetct.assign({},user)
+=> newUser = {내가 채울 값} + {기존 객체 값}
+
+// newUser != user
+```
+- **같은 이름의 key value를 바꿔도 기존 객체는 바뀌지 않음**
+
+- ⚠️**주의할 규칙**: 뒤에 오는 객체가 앞의 갚을 덮어씀👇
+
+```
+const user = {
+    name: "tom"
+}
+
+const newUser = Object.assign({name: "mike"},user);
+
+console.log(newUser.name)  //"tom"
+
+-->❓WHY? 뒤에 온 user가 앞의 {name: "mike"}를 덮어 썼기 때문. 꼭 함수 선언 후 값을 따로 할당해줄 것.
+
+```
+- 기존에 있는 key의 값을 바꾸기 위해서는?
+- 두개 이상의 객체도 합칠 수 있음
+```
+const user = {
+    name: "tom"
+}
+const age = {
+    age: 30
+}
+const gender = {
+    gender: 2
+}
+
+Object.assign(user, age, gender);
+
+--> {name: 'tom', age: 30, gender: 2}
+```
+
+`const clone변수=기존변수`랑 뭐가 다르죠??  
+clone은 객체를 복사해 새로 만드는 것이 아니라 위치값을 공유하는 형태. clone변수 내의 객체값을 바꾸면 기존 변수 객체의 값도 변경되어버림
+
+2. 키 배열 반환
+Object.keys(객체명);
+- 객체에 들어있는 key를 전부 배열로 반환해줌
+- ex) [name, age, gender]
+
+3. 값 배열 반환
+Object.values(객체명);
+- 객체에 든 값을 배열로 반환해줌
+- ex) ["tom", 30, 2]
+
+4. 키/값 배열 반환
+Object.entries(객체명);
+- 객체의 키와 값을 하나씩 묶어서 배열들로 반환해줌
+- ex) ["name","tom"], ["age",30], ["gender", 2]
+
+5. 키/값 배열 -> 객체 반환
+- Object.fromEntries(배열명);
+```
+const arr = [
+  ["name","tom"], 
+  ["age",30], 
+  ["gender", 2]
+]
+
+Object.fromEntries(arr);
+
+---> {
+  name: "tom"
+  age: 30
+  gender: 2
+}
+```
+- **arr이 바뀌는 게 아님!!** 단지 값을 반환해 줄 뿐.
+
+---
 
 ## Array = 배열
 순서가 있는 리스트 -> 인덱스를 가짐
@@ -622,3 +869,70 @@ console.log(arr)  // ["i", "b" ...]
 - 끝 요소 삭제: arr.pop()   --> ()는 함수호출. 값을 넣는게 아님
 - 제일 앞에 추가: arr.unshift.(값)
 - 제일 앞 삭제: arr.shift
+
+---
+
+## 숫자, 수학 Method
+
+### toString();
+숫자를 문자열로 바꿔주는 메소드  
+1()안에 숫자를 쓰면 해당 진수 숫자를 문자열로 바꿔줌
+```
+const num = 10
+
+num.toString();  //'10'
+num.toString(2); //'1010'
+
+const num2 =225;
+
+num2.toString(16); //'e1'
+```
+### Math.메소드
+- `Math.PI`: 원주율 값 알려줌
+- `Math.ceil(변수)`: 올림
+- `Math.floor(변수)`: 내림
+- `Math.round(변수)`: 반올림
+- `변수.toFixed(자릿수)`: 변수의 숫자를 원하는 자릿수에서 반올림 해줌
+  **⚠️문자열로 반환하기 때문에 `Number();`로 숫자형으로 바꿔줘야함**
+  -ex) 
+    ```
+    let a = 30.1234;
+
+    a.toFixed(2); ---> 30.12
+    a.toFixed(0); ---> 30
+    a.toFixed(7); ---> 30.1234000
+    ```
+
+- `isNaN(변수)`: 변수의 값이 숫자형인지 판별해줌(숫자가 아니면 true, 숫자면 false)
+  - ⚠️ **NaN도 숫자가 아니라고 판단함** 오로지 숫자열만 false
+```
+let x = 30
+let y = "a"
+let z = Number("b")
+let a = Number("30")
+
+isNaN(x)  // false
+isNaN(y)  // true
+isNaN(z)  // true
+isNaN(a)  // false
+```
+-`parseInt()`: 문자열을 숫자로 바꿔줌
+  - Number과 다른 점: 문자열을 만나기 전의 숫자만 바꿀 수 있음(넘버는 문자열을 넣으면 NaN이 됨)
+  - 2진수, 16진수로 변환 가능함  
+```
+let margin = "10px12"
+
+parseInt(margin);   // 10
+parseInt(margin, 2);   // 2
+```
+- `Math.max(인수)`: 인수들 중 최대값 찾기
+- `Math.min(인수)`: 인수들 중 최솟값 찾기
+- `Math.min(숫자)`: 절대값 구하기
+- `Math.pow(n,m)`: n의 m제곱 구하기
+- `Math.sqrt(숫자)`: 제곱근 구하기
+- `Mate.random()`: 0~1사이 무작위 숫자 생성
+    `Math.floor(Math.random()*(max-min+1))+min` 해서 범위 지정도 가능함  
+    ex) Math.floor(Math.random() * 100) + 1 : 1~100
+
+## this
+
