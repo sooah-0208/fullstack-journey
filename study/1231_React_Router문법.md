@@ -44,6 +44,19 @@ jsx <tr onClick={() => navigate("/")}>
 ---
 
 # Hook( use() )알아보기
+**HOOK**이란,  
+state, 생명주기, React 기능을 “낚아채서(hook)” 쓰게 해주는 함수들
+
+## 훅의 핵심 기능
+
+| 기능     | 예전                | 지금                       |
+| ------ | ----------------- | ------------------------ |
+| 상태 관리  | 클래스 state         | `useState`               |
+| 생명주기   | componentDidMount | `useEffect`              |
+| DOM 접근 | ref               | `useRef`                 |
+| 성능 최적화 | 어려움               | `useMemo`, `useCallback` |
+| 전역 상태  | 복잡                | `useContext`             |
+
 
 ## 1️⃣ Router Hook (길 찾기 & 데이터 수신)
 ### 🧭 useNavigate (화면 전환)
@@ -59,18 +72,22 @@ jsx <tr onClick={() => navigate("/")}>
 
 ## 2️⃣ React Hook (상태 관리 & 생명 주기)
 ### 📦 useState (기억 장치)
-- 역할: 컴포넌트 내부에서 변하는 데이터를 기억하고 관리합니다.
-- 특징: 일반 변수와 달리, useState로 만든 값이 바뀌면 리액트가 화면을 자동으로 다시 그려줍니다(렌더링).
+- 역할: 컴포넌트 내부에서 변하는 데이터를 기억하고 관리함.
+- 특징: 일반 변수와 달리, useState로 만든 값이 바뀌면 리액트가 화면을 자동으로 다시 그려줌(렌더링).
+- 사용: 값 변화에 따라 화면이 재렌더링 되어야 할 때(이벤트/타이머/서버 응답/useEffect/처음 렌더링 시 계산 결과 등)
 - 구조: const [데이터(초기값), 변경함수] = useState(초기값);
 - const [data, setData] = useState(초기값);
          초기값   함수
-data = 읽기 전용 변수 = 상수(바꿀 수 없음)
-그럼 어떻게 값을 바꿔요?? -> setData 함수로 처리
-당연히 변수라 [a, b]해도 되지만 누구나 알아볼 수 있도록 보편적으로 data/setData를 씀
 
-data 값이 바뀌면 상위 함수가 다시 실행됨
-but `useState` 값은 React 컴포넌트 외부에서 기억하기 때문에 이전값이 날아가지 않아 누적됨
-**데이터 관리는 무!조!건! `useState` 사용**
+- 초기값은 처음 렌더링 1회만 쓰이고 다시는 쓰이지 않음
+- 초기값에는 어떤 유형이든 들어갈 수 있음(number,strign,boolean, array, object)
+- data = 읽기 전용 변수 = 상수(바꿀 수 없음)  
+그럼 어떻게 값을 바꿔요?? -> setData 함수로 처리  
+당연히 변수라 [a, b]해도 되지만 누구나 알아볼 수 있도록 보편적으로 data/setData를 씀  
+
+- data 값이 바뀌면 상위 함수가 다시 실행됨
+- but `useState` 값은 React 컴포넌트 외부에서 기억하기 때문에 이전값이 날아가지 않아 누적됨
+- **데이터 관리는 무!조!건! `useState` 사용**
 
 ```
 const Page1 = () => {
@@ -88,23 +105,48 @@ const Page1 = () => {
 
 }
 ```
-렌더링 될 때 마다 Page1 함수를 재실행하기 때문에 let x = 0이 매번 실행되어서 x값이 0으로 초기화 됨
-? let x를 전역변수로 두면 초기화 안되는데요??
-! 우리는 Page1 함수를 실행시킬 때 동작하고 싶은데 전역변수로 설정해버리면 Page1에 존속되지 않게됨
+🎯 해석: 렌더링 될 때 마다 Page1 함수를 재실행하기 때문에 let x = 0이 매번 실행되어서 x값이 0으로 초기화 됨
+- ❓ let x를 전역변수로 두면 초기화 안되는데요??
+- ❗ 우리는 Page1 함수를 실행시킬 때 동작하고 싶은데 전역변수로 설정해버리면 Page1에 존속되지 않게됨, Page1이 실행된 후 다시 전역변수 let x = 0;이 실행되어 매번 화면 그릴 때 마다 x=0으로 초기화 됨
 
-useState를 사용할 때 받는 값이 바뀔 때 마다 메인 함수가 다시 호출 됨
+- useState를 사용할 때 받는 값이 바뀔 때 마다 메인 함수가 다시 호출 됨
 
- `const [data, setData] = useState(0);`
- 왜 const를 쓰나요?
- let, var는 임의로 값을 바꿔버릴 수 있기 때문에 setData가 필요하지가 않음
- 그래서 임의로 값을 변경할 수 없는 const의 값을 바꿔주기 위해 사용하는 함수
+ - `const [data, setData] = useState(0);`
+  - 🤔 왜 const를 쓰나요?
+  - let, var는 임의로 값을 바꿔버릴 수 있기 때문에 setData가 필요하지가 않음  
+    그래서 임의로 값을 변경할 수 없는 const의 값을 바꿔주기 위해 사용하는 함수
 
-setData는 일반 함수와 달라 순서대로 실행되지 않음
-{}로 묶인 event 내부 코드가 다 실행된 후 data +1 이 진행됨
-setData는 data의 값을 실시간으로 변경해줌
+- setData의 함수 진행 순서
+setData는 일반 함수와 달라 순서대로 실행되지 않음  
+{}로 묶인 event 내부 코드가 다 실행된 후 data +1 이 진행됨  
+setData는 data의 값을 실시간으로 변경해줌  
 
-useState를 사용할 때
-setAbc와 if문을 동시에 사용하지 않음 --> WHY? 두 번 작동해야만 if문의 조건이 실행되기 때문
+- useState를 사용할 때  
+setAbc와 if문을 동시에 사용하지 않음 --> WHY? 두 번 작동해야만 if문의 조건이 실행되기 때문  
+
+- 함수 하나에 인스턴스를 여러개 사용할 수 있음
+```
+//js
+function Counter() {
+  const [count, setCount] = useState(0);
+  return <button>{count}</button>;
+}
+//jsx
+<Counter />   //a
+<Counter />   //b
+<Counter />   //c라고 하면
+```
+이렇게 사용하면 작동하는 함수는 Counter하나인데 버튼이 3개가 생김  
+각 버튼들은 각각의 값을 기억함 `a=2, b=0, c=3`의 값을 가질 수 있음
+
+#### useState에서 꼭 알아야 할 규칙
+🚨 1. 최상단에서만 호출
+```
+if (a) {
+  useState(0);
+}
+```
+❌ 👆이렇겐 안 됨
 
 ### ⚡ useEffect (실행 타이밍 조절)
 - 역할: 컴포넌트가 화면에 나타날 때(Mount), 사라질 때(Unmount), 혹은 특정 값이 바뀔 때 자동으로 실행할 코드를 적는 곳입니다.
