@@ -139,14 +139,94 @@ function Counter() {
 이렇게 사용하면 작동하는 함수는 Counter하나인데 버튼이 3개가 생김  
 각 버튼들은 각각의 값을 기억함 `a=2, b=0, c=3`의 값을 가질 수 있음
 
-#### useState에서 꼭 알아야 할 규칙
-🚨 1. 최상단에서만 호출
+#### 🚨 useState에서 꼭 알아야 할 규칙 🚨
+1. 최상단에서만 호출
 ```
 if (a) {
   useState(0);
 }
+
+
+for (...) {
+  useState(0);
+}
+
+
+function test() {
+  useState(0);
+}
 ```
 ❌ 👆이렇겐 안 됨
+
+2. 항상 같은 순서로 호출(if문을 쓸 수 없는 이유)
+: 훅은 호출 순서로 state를 기억함.
+```
+if (cond) {
+  useState(0);
+}
+useState(1);
+```
+useState자체가 배열이라 이런식으로 cond가 false라 useState(0);을 건너뛰게 되면  
+`Hook[0] = useState(0);`, `Hook[1] = useState(1);`로 기억을 하고 있다가
+어? if문에 안맞네? `useState(1) = Hook[0]`으로 읽게되고 state가 가진 값이 섞이게 됨 -> react에서 강제로 오류를 발생시킴
+ 
+
+#### 📚학습 예시
+1. 재랜더링 되는 경우
+```
+import { useState } from "react"
+
+let 변수2 = 0;
+
+const Page1 = () => {
+    const [data, setData] = useState(0)
+    let 변수 = 0
+    console.log(data, 변수, 변수2)
+
+    const event = () => {
+        setData(data + 1)
+        변수 += 1
+        변수2 += 1
+    }
+
+    return (
+        <>
+            <button type="button" onClick={event}>증가</button>
+        </>
+    )
+}
+
+export default Page1
+```
+
+- 클릭 이벤트가 발생할 때 마다 값은 date, 변수, 변수2 = 1, 0, 1 / 2, 0, 2 ...로 바뀜
+
+2. 재렌더링 안되는 경우
+```
+import { useState } from "react"
+
+let 변수2 = 0;
+
+const Page1 = () => {
+    const [data, setData] = useState(0)
+    let 변수 = 0
+    console.log(data, 변수, 변수2)
+
+    const event = () => {
+        변수2 += 1
+    }
+
+    return (
+        <>
+            <button type="button" onClick={event}>증가</button>
+        </>
+    )
+}
+
+export default Page1
+```
+- 👆 여기서 변수2는 전역변수로 react와 무관한 일반변수이기 때문에 react가 읽지 못함 -> 즉, 변한 값이 없네? 랜더링 할 필요 없겠네?가 되어서 변수2에 대한 변화를 출력하지 못 함
+  
 
 ### ⚡ useEffect (실행 타이밍 조절)
 - 역할: 컴포넌트가 화면에 나타날 때(Mount), 사라질 때(Unmount), 혹은 특정 값이 바뀔 때 자동으로 실행할 코드를 적는 곳입니다.
