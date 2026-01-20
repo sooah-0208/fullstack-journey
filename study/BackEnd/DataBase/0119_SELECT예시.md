@@ -37,8 +37,6 @@ ON (e.emp_no = s.emp_no)
 JOIN: 두개 이상의 테이블을 공통된 COL기준으로 합쳐줌
 - 여기서는 `emp_no`가 양쪽 테이블에 같이 있어서 합쳐준거임
 
-INNER JOIN: 
-ON: 
 
 -- 5. 사원 중 남자의 연봉 추출
 ```
@@ -51,9 +49,6 @@ INNER JOIN edu.salaries AS s
 ON (e.emp_no = s.emp_no)
 WHERE e.gender <> 'M';
 ```
-WHERE: 조건식
-비교연산자 사용 가능
-`!=` = `<>` NOT은 이렇게 두개로 적을 수 있음
 
 -- 6. 여성 사원중 연봉이 7만 이상인 사원 추출
 ```
@@ -68,7 +63,7 @@ WHERE e.gender = 'F'
 AND s.salary > 70000
 AND s.to_date = '9999-01-01';
 ```
-AND: 여러 조건을 만족해야하는 경우
+
 
 -- 7. 여성사원 중 연봉 협상이 가장 많은 사원 추출
 ```
@@ -78,18 +73,4 @@ GROUP BY emp_no
 ORDER BY 2 DESC, 1;
 ```
 
-- `COUNT()` 카운트: 행(row)의 개수를 세는 집계 함수
-null이 아닌 행만 세어줌  
-- `GROUP BY`: 같은 값의 행들을 하나의 그룹으로 묶음
-❌ 이게 없으면 에러 남  
-👉 emp_no는 개별 값  
-👉 COUNT(emp_no)는 집계 결과  
-👉 같이 쓰려면 그룹 기준이 필요  
-emp_no별로 묶은 후 그 묶음마다 카운트를 계산함
-
-📌 결과:
-```
-emp_no = 10001 → 17개
-emp_no = 10002 → 1개
-```
 
