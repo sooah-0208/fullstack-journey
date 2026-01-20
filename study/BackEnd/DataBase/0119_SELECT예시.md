@@ -1,4 +1,4 @@
-Schema 부르는 방법
+# Schema 부르는 방법
 
 `USE edu;`
 원하는 데이터베이스 선택
