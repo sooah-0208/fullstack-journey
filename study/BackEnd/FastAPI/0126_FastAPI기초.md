@@ -94,6 +94,7 @@ import os
 static_dir = os.path.join(os.path.dirname(__file__),'images')
 app.mount('/images',StaticFiles(directory=static_dir), name='images')
 ```
+- `__file__`: 현재 실행중인 파이썬 경로
 - `os`: 물리적 파일 관리할 때 사용
 - `static_dir =~~`: url로 접근 가능하도록 경로 제작
 - `app.mount(~~)`: ('url주소', 객체명(정적파일 위치), 이름)
