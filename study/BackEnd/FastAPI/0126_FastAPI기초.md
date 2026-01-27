@@ -18,7 +18,7 @@ uv add fastapi --extra standard
 ```
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI()               
 
 @app.get("/")                 #Method
 def read_root():
@@ -30,7 +30,18 @@ def read_root():
 uv run fastapi dev  #dev는 개발모드(로컬호스트만 뜸), 여기 run쓰면 배포모드(다른 ip로 접속 가능)
 ```
 
+## 포트 변경하는 방법
+```
+uv run fastapi dev --port 7777(원하는 번호)
+```
+기본 포트는 8000
+
+`fastapi run` 하면 배포용 -> 포트가 0.0.0.0이됨 -> 모든 포트로 접속 가능
+-> ipconfig로 ip주소 확인하면 그 주소로 다른 pc에서 접솔해볼 수 있음
+
 # Method
+url 주소로 접속했을 때 정보를 받기 위함
+
 - get: read
 - post: create
 - delete: delete
@@ -66,6 +77,11 @@ def patch_root():
 def test(key: str):     #annotation(어노테이션)
     return {"key": "test"}
 ```
+
+## `app = FastAPI()`
+- WAS(Web Application Server)라는 서버를 실행하기 위한 **필수코드**
+- FastAPI()라는 클래스를 app라는 변수에 넣어준 것
+- 규칙: 무조건 **main.py에 있어야함**, 변수로 담아줘야함
 
 ## `@app.get("/")`의 역할
 -`@`: 요청
