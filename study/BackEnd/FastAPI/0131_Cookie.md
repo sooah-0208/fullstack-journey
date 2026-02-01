@@ -102,17 +102,103 @@ Alice가 jeans.example.com에서 쇼핑을 할 때, jeans.example.com 원본 서
 - 언어 설정, UI 상태, 다크모드 등만 저장
 
 in react  
-
+1) `react-cookie` 의 `useCookies`
 ```
+// 기본세팅
+// main.jsx 최상위에 **CookiesProvider** 감싸기
+// main.jsx
+import {CookiesProvider} from 'react-cookie'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <CookiesProvider>
+        <App/>
+    </CookiesProvider>
+)
+
+
 import { useCookies } from 'react-cookie'
 
-const [cookies, setCookie, removeCookie] = useCookies(['ck']);
+const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
- const boardView = no => 
-    setCookie("boardNo", window.btoa(no) )
+// 쿠키 생성하기
+ const createCookies = (no) => 
+    setCookie("token", window.btoa(no),{
+        path='/'
+        maxAge: 60*60*24
+        sameSiteL 'lax'
+    })
 
 보통 클릭 이벤트나 submit이벤트에 넣음
+
+// 쿠키 삭제하기
+const logout = ()=>{
+    removeCookie('token', {
+        path: '/',
+    })
+}
+
+// 쿠키 서버로 전달
+axios.get('http://localhost:8000/me',{
+    withCredentials: true,
+})
 ```
+- const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  - `cookies`: 현재 브라우저에 있는 쿠키 값(state라고 생각하면 됨)
+  - `setCookie`: 쿠키 생성하거나 수정 하는 함수
+                 함수를 여러번 사용하여 다양한 이름의 쿠키를 생성할 수도 있음 
+                 `path:'/'`로 지정하지 않으면 현재 접속해있는 페이지에서 쿠키를 생성해버려 전체에서 못 읽을 수 있음
+  - `removeCookie`: 쿠키 지우는 함수
+                    path가 반드시 생성때와 동일해야함
+  - `useCookies(['이름'])`: 쿠키는 여러 정보를 담고있는 배열임, 그 중 '이름'이라는 이름을 가진 쿠키 정보만 받겠다는 뜻
+                           `useCookies(['user','token'])` 이런 형태로 여러개 받을수도 있음
+                           전부 감시하고싶으면: `useCookies()`
+                           
+
+
+
+2) `js-cookie`의 `Cookies`
+```
+import Cookies from 'js-cookie'
+
+const setCookie = ()=>{
+    Cookies.set('token', '1234ab', {
+        expires: 7,
+        path: '/'
+    })
+}
+
+// 클릭 이벤트나 submit 이벤트에 넣음
+
+// 쿠키 읽어오기
+useEffect(()=>{
+    const token = Cookies.get('token')
+    console.log(token)
+},[])
+
+
+// 쿠키 삭제
+const logout=()=>{
+    Cookies.remove('token', {path:'/'})
+}
+```
+
+#### 쿠키 생성시 사용할 수 있는 옵션
+- expires: 유효기간
+           단위=day(0.5 등으로 시간 설정도 가능)
+           없으면 세션 쿠키가 됨(브라우저 닫으면 삭제)
+           new Date('년-월-일')로 해당 날짜에 삭제되게 만들기도 가능
+
+- path: 접근 가능한 경로
+        해당 경로에서 만든 쿠키는 지울 때도 해당 경로로 접근해야만 지울 수 있음
+- domain: 'example.com': 도메인 범위
+                         www.example.com이라는 도메인을 포함하도록 함(해당 도메인에서만 읽을 수 있음)
+                         잘못 사용하면 쿠키 생성이 안될 수 있음
+- secure: true : HTTPS에서만 쿠키를 전송할 수 있게 함
+                 보안용으로 필수(localhost의 경우 필요 없음)
+- sameSite: lax(or strict, none): CSRF방어, 다른 사이트 요청에도 쿠키를 보낼것인지 결정하는 용도
+                                  strict: 절대 안 보냄, 링크 클릭도 불가(은행, 관리자페이지 등에 사용)
+                                  lax: 기본값, 일반 GET요청(링크 이동)은 허용함
+                                  none: 무조건 다른 사이트에도 전송 -> 그래서 secure:true가 꼭 필요함
 
 ### BackEnd에서 쿠키 만들기
 in python FastAPI  
