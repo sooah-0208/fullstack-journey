@@ -142,7 +142,9 @@ axios.get('http://localhost:8000/me',{
     withCredentials: true,
 })
 ```
-- const [cookies, setCookie, removeCookie] = useCookies(['token']);
+
+#### 옵션
+- `const [cookies, setCookie, removeCookie] = useCookies(['token']);`
   - `cookies`: 현재 브라우저에 있는 쿠키 값(state라고 생각하면 됨)
   - `setCookie`: 쿠키 생성하거나 수정 하는 함수
                  함수를 여러번 사용하여 다양한 이름의 쿠키를 생성할 수도 있음 
@@ -152,6 +154,7 @@ axios.get('http://localhost:8000/me',{
   - `useCookies(['이름'])`: 쿠키는 여러 정보를 담고있는 배열임, 그 중 '이름'이라는 이름을 가진 쿠키 정보만 받겠다는 뜻
                            `useCookies(['user','token'])` 이런 형태로 여러개 받을수도 있음
                            전부 감시하고싶으면: `useCookies()`
+                           여기서 감시란?: 감시중인 쿠키가 바뀌었을 때만 리렌더링 시켜줌
                            
 
 
