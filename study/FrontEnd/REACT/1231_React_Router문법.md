@@ -1,5 +1,19 @@
 # Hook
 
+## useParams
+```
+import { useParmas } from "react-router-dom"
+
+// 라우터 정의
+<Route path="/user/:no element...>
+머 일케 정의 되어있으면 :뒤에 애들을 params로 보냄
+
+//컴포넌트
+const params = useParams()
+
+const Event()
+```
+
 ## useNavigate
 
 ```
