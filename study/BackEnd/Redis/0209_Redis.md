@@ -1,8 +1,45 @@
 # Redis란?
+서버 메모리(DB랑 같음)
+브라우저를 닫거나 새로고침을 해도 지워지지 않음
 
-## 
+## docker에 redis 설치
+`docker pull redis:8.4.0`로 다운
+
+## python에서 실행
 `uv add redis`
 `import redis`
+
+## redis 실행 함수 작성
+
+```
+@app.get('/set')
+def setRedis():
+    client.setex('fastapi:100', 60*60*24, 'sooah')
+    return {'status': True}
+
+@app.get('/get')
+def getRedis():
+    result = client.get("fastapi:100")
+    return {"result": result}
+
+@app.get('/del')
+def delete():
+    client.delete("fastapi:100")
+    return{"status":True}
+```
+이걸로 redis 생성/읽기/삭제
+
+## 터미널 실행
+`docker exec -it redis redis-cli`
+-it 이후가 컨테이너명, /gi
+
+CLI명령어로 생성/읽기/삭제도 가능
+`SET fastapi:200 12345`
+`GET fastapi:100` => "sooah" 읽어옴
+
+종료: `exit`
+
+
 
 docker에 redis 컨테이너 만들기
 ```

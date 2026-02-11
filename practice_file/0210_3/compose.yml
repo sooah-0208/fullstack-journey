@@ -1,0 +1,90 @@
+services:
+  app3:
+    container_name: app3
+    # image: node:24.13.0
+    build:
+      context: ./app3
+      dockerfile: dockerfile
+    depends_on:
+      - app1
+    ports:
+      - 80:6212
+    working_dir: /workspace
+    # volumes:
+    #   - ./frontend:/workspace
+    environment:
+      - VITE_APP_FASTAPI_URL=http://app1:8001
+    # command: ["sleep", "infinity"]
+    command: [ "npm", "run", "dev" ]
+
+  app1:
+    container_name: app1
+    env_file:
+      - ./app1/.env
+    # image: uv:1
+    build:
+      context: ./app1
+      dockerfile: dockerfile
+    depends_on:
+      - mariadb
+      - redis
+      - kafka
+    ports:
+      - 8001:6212
+    working_dir: /workspace
+    environment:
+      - name=value
+    # volumes:
+    #   - ./backend:/workspace
+    # command: ["sleep", "infinity"]
+    command: ["uv", "run", "fastapi", "run"]
+  
+  app2:
+    container_name: app2
+    env_file:
+      - ./app2/.env
+    # image: uv:1
+    build:
+      context: ./app2
+      dockerfile: dockerfile
+    depends_on:
+      - mariadb
+      - redis
+      - kafka
+    ports:
+      - 8002:6212
+    working_dir: /workspace
+    environment:
+      - name=value
+    command: ["uv", "run", "fastapi", "run"]
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:12.1.2
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mariadb/conf.d:/etc/mysql/conf.d:ro
+      - ./mariadb/data:/var/lib/mysql:rw
+      - ./mariadb/initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      - MARIADB_HOST=192.168.0.9
+      - MARIADB_PORT=23306
+      - MARIADB_ROOT_PASSWORD=sooah
+      - MARIADB_DATABASE=test
+      - TZ=Asia/Seoul
+      - LC_ALL:en_US.UTF-8
+  redis:
+    container_name: redis
+    image: redis:8.4.0
+    restart: always
+    ports:
+      - 6379:6379
+
+  kafka:
+    container_name: kafka
+    image: apache/kafka:4.0.1
+    restart: always
+    ports:
+      - 9092:9092
