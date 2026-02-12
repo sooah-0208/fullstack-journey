@@ -12,8 +12,6 @@ producer A -> cunsumer c
                 → D  
 A는 책임 질게 없어짐  
 
-
-
 ## 흐름도
 ![alt text](image-2.png)
 producer가 broker에 메세지 전달
@@ -21,6 +19,9 @@ producer가 broker에 메세지 전달
 컨슈머가 메세지 하나를 읽음 -> 처리 완료되면 브로커가 삭제함
 
 ## CMD에서 kafka 실행하기
+
+**Kafka Port: 9092**
+
 kafka 명령어는 window에서 바로 실행할 수 없음
 -> 환경변수 설정
 -> 시스템 변수의 Path 
