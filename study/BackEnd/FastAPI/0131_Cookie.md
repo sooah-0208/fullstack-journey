@@ -247,3 +247,9 @@ def delete_cookie(response: Response):
     return {"msg": "쿠키 삭제"}
 ```
 
+## XSS vs CSRFxss
+공격대상: 브라우저
+HttpOnly로 방어
+csrf
+공격대상: 웹서버(백)
+토큰 사용하여 방어
