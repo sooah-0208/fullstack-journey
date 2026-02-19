@@ -13,7 +13,7 @@ producer A -> cunsumer c
 A는 책임 질게 없어짐  
 
 ## 흐름도
-![alt text](image-2.png)
+![alt text](image-2.png)F
 producer가 broker에 메세지 전달
 이 Broker가 kafka, pd&cs가 개발자가 만든 것들
 컨슈머가 메세지 하나를 읽음 -> 처리 완료되면 브로커가 삭제함
