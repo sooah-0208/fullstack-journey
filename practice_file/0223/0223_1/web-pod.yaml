@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+
+# metadata는 pod이름
+metadata:
+  name: web2
+
+spec:
+  containers:
+      # 여기의 name은 container 이름
+      # name을 여러개 쓰면 한 pod안에 여러 컨테이너가 생김
+    - name: web
+      image: nginx:1.28
+      #port는 안 써도 무방함
+      ports:
+        - containerPort: 80
+
+##yaml 작성시에는 Tab 사용 불가/ 무조건 들여쓰기 두번!!
