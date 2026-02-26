@@ -1,0 +1,69 @@
+# github클론해오는 방식 => 내용이 안 바뀌는 정적파일을 이 방식으로 쓰는게 좋음. 내용 업데이트 잘 하지 않는 파일들.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: local-disk-pod
+  labels:
+    app: nginx
+
+spec:
+  initContainers:
+    - name: git-clone
+      image: alpine/git
+      command: ["git","clone","https://github.com/HighGooh/frontend.git","/app"]
+      volumeMounts:
+        - name: react-vol
+          mountPath: /app
+    - name: vite-build
+      image: node:24.13.1-alpine3.22
+      command: ["/bin/sh", "-c"]
+      # -c: args의 명령어들을 한 묶음으로 실행하라는 명령어. 이거 없으면 명령어 하나마다 command를 여러개 적어줘야함
+      args:
+      - |
+        cd /app
+        npm ci
+        npm run build
+        cp -r default.conf /nginx/
+        cp -r dist/* /app/
+    # run build: react를 배포용파일(dist)로 빌드시킴
+    # cp는 순서대로 conf설정파일 카피, 위에서 build한 dist파일 카피
+
+      volumeMounts:
+        - name: react-vol
+          mountPath: /app
+        - name: nginx-vol
+          mountPath: /nginx
+  containers:
+    - name: nginx-container
+      image: nginx:1.28
+      ports:
+      - containerPort: 80
+      volumeMounts:
+      - mountPath: /usr/share/nginx/html
+        name: react-vol
+      - mountPath: /etc/nginx/conf.d
+        name: nginx-vol
+
+  volumes:
+  - name: react-vol
+    emptyDir: {}
+  - name: nginx-vol
+    emptyDir: {}
+    
+
+---
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: vol-service
+    
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: nginx

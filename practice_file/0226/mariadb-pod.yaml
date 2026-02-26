@@ -1,0 +1,49 @@
+# github클론해오는 방식 => 내용이 안 바뀌는 정적파일을 이 방식으로 쓰는게 좋음. 내용 업데이트 잘 하지 않는 파일들.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mariadb-pod
+  labels:
+    app: mariadb
+
+spec:
+  containers:
+  - name: mariadb-container
+    image: mariadb:12.1.2
+    ports:
+    - containerPort: 3306
+    env:
+    - name: MARIADB_ROOT_PASSWORD
+      valueFrom:
+        configMapKeyRef:
+          name: mariadb-config
+          key: MARIADB_ROOT_PASSWORD
+    volumeMounts:
+    - mountPath: /var/lib/mysql
+      name: mariadb-vol
+    - mountPath: /etc/mysql/cof.d/my.cnf
+      name: mariadb-config-vol
+
+  volumes:
+    - name: mariadb-vol
+      persistentVolumeClaim:
+        claimName: mariadb-pvc
+    - name: mariadb-config-vol
+      configMap:
+        name: mariadb-config
+---
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: mariadb-service
+    
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: mariadb

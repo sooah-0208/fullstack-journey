@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  storageClassName: local-storage
+  persistentVolumeReclaimPolicy: Retain
+  local:
+    path: /run/desktop/mnt/host/c/Users/hi/Desktop/수아/수아짱짱맨뿡뿡/fullstack-journey/practice_file/0226/html
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - docker-desktop
