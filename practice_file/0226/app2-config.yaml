@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: app2-config
+
+data:
+  ROOT_PATH: "/app1"
+  CLIENT_ID: "8ec93216bb725df8b34ab9ef10b8156a"
+  CLIENT_SECRET: "V88NmWvC34MX9CcMyMQsqvKuUcdW7ae8"
+  DNS: "aiedu.tplinkdns.com"
+  REDIRECT_URI: "http://aiedu.tplinkdns.com:6202/app1/oauth/callback/kakao"
+  SECURE: "False"
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  REDIS_ACCESS_DB: "0"
+  REDIS_REFRESH_DB: "1"
+  # config에 들어가는 value는 전부 다 문자열(숫자, boolen도)

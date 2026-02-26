@@ -23,8 +23,8 @@ oauth.register(
                  }
 )
 
-client1 = redis.Redis(host="redis", port=6379, db=0,decode_responses=True ) # access_token용 redis
-client2 = redis.Redis(host="redis", port=6379, db=1,decode_responses=True) # refresh_token용 redis
+client1 = redis.Redis(host="redis-service", port=6379, db=0,decode_responses=True ) # access_token용 redis
+client2 = redis.Redis(host="redis-service", port=6379, db=1,decode_responses=True) # refresh_token용 redis
 
 app = FastAPI(title=settings.title, root_path=settings.root_path)
 app.add_middleware(
