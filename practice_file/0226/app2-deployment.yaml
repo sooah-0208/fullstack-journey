@@ -69,6 +69,16 @@ spec:
             configMapKeyRef:
               name: app2-config
               key: REDIS_REFRESH_DB
+        - name: HOST
+          valueFrom:
+            configMapKeyRef:
+              name: app2-config
+              key: HOST
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: app2-config
+              key: PORT
         # volumeMounts:
         #   - name: app2-env
         #     mountPath: "/etc/config"
