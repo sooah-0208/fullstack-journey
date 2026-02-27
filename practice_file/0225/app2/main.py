@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Response, Cookie
 from settings import settings
 from authlib.integrations.starlette_client import OAuth
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import redis
 import uuid
@@ -23,13 +24,22 @@ oauth.register(
                  }
 )
 
-client1 = redis.Redis(host="redis-service", port=6379, db=0,decode_responses=True ) # access_token용 redis
-client2 = redis.Redis(host="redis-service", port=6379, db=1,decode_responses=True) # refresh_token용 redis
+client1 = redis.Redis(host=settings.host, port=settings.port, db=settings.redis_access_db,decode_responses=True ) # access_token용 redis
+client2 = redis.Redis(host=settings.host, port=settings.port, db=settings.redis_refresh_db,decode_responses=True) # refresh_token용 redis
 
 app = FastAPI(title=settings.title, root_path=settings.root_path)
 app.add_middleware(
   SessionMiddleware,
   secret_key="your-secret-key-here"
+)
+
+origins = [ "http://localhost","http://localhost:5173", "http://localhost:80", "http://quadecologics.cloud:8200", "http://aiedu.tplinkdns.com:6212", "http://aiedu.tplinkdns.com:6202" ]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 async def getToken(client, code: str):
@@ -121,9 +131,6 @@ async def kakaoCallback(code: str, response:Response):
     # )
     return {"status":True, "token":tokenResponse.json()}
   return {"status": False}
-  # kakao = oauth.create_client('kakao')
-  # access_token = await oauth.kakao.authorize_access_token(request)
-  # return{"access_token":access_token}
 
 @app.get('/me')
 async def me(accept: str = Cookie(default=None)):

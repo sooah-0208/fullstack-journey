@@ -7,6 +7,10 @@ class Settings(BaseSettings):
   client_secret:str
   dns:str
   redirect_uri:str
+  host:str
+  port:int
+  redis_access_db:int
+  redis_refresh_db:int
 
   model_config = SettingsConfigDict(
     env_file=".env",

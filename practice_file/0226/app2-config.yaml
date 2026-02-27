@@ -15,4 +15,6 @@ data:
   REDIS_PORT: "6379"
   REDIS_ACCESS_DB: "0"
   REDIS_REFRESH_DB: "1"
+  HOST: "redis-service"
+  PORT: "6379"
   # config에 들어가는 value는 전부 다 문자열(숫자, boolen도)
