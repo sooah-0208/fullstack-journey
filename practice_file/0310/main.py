@@ -1,5 +1,14 @@
 import mariadb
 
+
+conn_params = {
+  "user": "root",
+  "password": "1234",
+  "host": "192.168.0.201",
+  "database" : "db_air",
+  "port" : int(3306)
+}
+
 def main():
     try:
         conn = mariadb.connect(**conn_params)
