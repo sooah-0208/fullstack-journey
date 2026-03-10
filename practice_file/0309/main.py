@@ -1,4 +1,7 @@
 import mariadb
+from fastapi import FastAPI
+
+app = FastAPI()
 
 conn_params = {
   "user": "root",
@@ -107,7 +110,12 @@ def 항공사():
     except mariadb.Error as e:
         print(f"MariaDB Error : {e}")
 
-def etl3(data:dict):
+@app.get("/")
+def read():
+  return {"status": True}
+
+@app.post('/insert')
+def etl3(data:list[dict]):
     print(f"db_air에서 db_to_air 데이터 이관 작업")
     try:
         conn = mariadb.connect(**conn_params)
@@ -135,9 +143,11 @@ def etl3(data:dict):
             conn.commit()
             cur.close()
             conn.close()
+            return data
     except mariadb.Error as e:
         print(f"MariaDB Error : {e}")
 
+@app.post('/read')
 def jobs(useYn = tuple):
     try:
         conn = mariadb.connect(**conn_params)
@@ -159,12 +169,29 @@ def jobs(useYn = tuple):
         print(f"MariaDB Error : {e}")
         return []
 
+
+@app.post('/useYn')
+def useYn(yn:int, table:str):
+    try:
+        conn = mariadb.connect(**conn_params)
+        if conn:
+            sql = f"update db_to_air.jobs set `useYn` = {yn} WHERE job_table = '{table}';"
+            cur = conn.cursor()
+            cur.execute(sql)
+            conn.commit()
+            cur.close()
+            conn.close()
+            return {"status": "success", "message": f"{table} useYN {yn}업데이트 완료"}
+    except mariadb.Error as e:
+        print(f"MariaDB Error : {e}")
+
+    
         
-if "__main__" == __name__:
-    useYn = tuple([0])
-    for row in jobs(useYn):
-        if row:
-            etl3(row)
+# if "__main__" == __name__:
+#     useYn = tuple([0])
+#     for row in jobs(useYn):
+#         if row:
+#             etl3(row)
             # etlAll(row['job_table'],row['year'],row['month'])
     # etlOne(1987, 10)
     # etlAll("비행",1987)
