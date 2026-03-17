@@ -1,0 +1,92 @@
+# 함수
+### 함수 및 프로시저는 필수로 쿼리를 하나만 쓴 후 전체실행해야함!!
+
+```
+DELIMITER //
+
+CREATE FUNCTION get_total(a VARCHAR(100), b VARCHAR(100), c VARCHAR(100), d VARCHAR(100) )
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE result INT;
+    
+    SELECT 
+    (
+    `05~06` + `06~07` +  `07~08` + `08~09` + `09~10` +  `10~11` +  `11~12` +  `12~13` + 
+    `13~14` +  `14~15` + `15~16` +  `16~17` +  `17~18` +  `18~19` +  `19~20` +  `20~21` + 
+    `21~22` +  `22~23` +  `23~24` +  `24~`
+    ) INTO result
+    FROM seoul_metro.`2010`
+    WHERE `날짜` = a
+      AND `역번호` = b
+      AND `역명` = c
+      AND `구분` = d
+    LIMIT 1;
+    
+    RETURN result;
+END;
+//
+
+DELIMITER ;
+```
+- `함수명(추후에 받을 파라메타)`: where 조건으로 넣을 변수라고 생각하면 됨  
+                              파라메타 개수와 where 조건 개수는 같아야함
+- `DECLARE 변수명 데이터타입;`: 해당 함수 값을 받을 변수 생성 ex) `DECLARE result INT;`
+- 함수는 무조건 값을 하나만 return해야함 --> 오류 방지 위해서 `LIMIT 1` 작성. 생략 가능
+- FROM 조건이 들어가면 그 테이블에서만 사용이 가능함
+- from 없이 만들수는 있는데 사용하기 복잡함
+
+사용
+```
+SELECT `날짜`, `역번호`, `역명`, 
+        get_total(`날짜`, `역번호`, `역명`, '승차') AS 승차합, 
+        get_total(`날짜`, `역번호`, `역명`, '하차') AS 하차합,
+ FROM seoul_metro.`2010`
+ where `날짜` = '2010-01-01'
+ GROUP BY `날짜`, `역번호`, `역명`;
+
+```
+- 사용할 때 역시 함수 파라메타 개수에 맞춰 넣어줘야함
+----
+
+# 프로시져
+```
+DELIMITER //
+
+CREATE PROCEDURE pl_total(
+    IN a VARCHAR(100), 
+     IN b VARCHAR(100), 
+     IN c VARCHAR(100), 
+     IN d VARCHAR(100),
+    OUT p_result INT
+)
+BEGIN
+    SELECT
+        SUM(
+            IFNULL(`05~06`,0) + IFNULL(`06~07`,0) + IFNULL(`07~08`,0) +
+            IFNULL(`08~09`,0) + IFNULL(`09~10`,0) + IFNULL(`10~11`,0) +
+            IFNULL(`11~12`,0) + IFNULL(`12~13`,0) + IFNULL(`13~14`,0) +
+            IFNULL(`14~15`,0) + IFNULL(`15~16`,0) + IFNULL(`16~17`,0) +
+            IFNULL(`17~18`,0) + IFNULL(`18~19`,0) + IFNULL(`19~20`,0) +
+            IFNULL(`20~21`,0) + IFNULL(`21~22`,0) + IFNULL(`22~23`,0) +
+            IFNULL(`23~24`,0) + IFNULL(`24~`,0)
+        )
+    INTO p_result
+    FROM seoul_metro_temp
+    WHERE `날짜` = a
+      AND `역번호` = b
+      AND `역명` = c
+      AND `구분` = d
+     LIMIT 1;
+END;
+//
+
+DELIMITER ;
+```
+사용
+```
+SET @result = 0;
+CALL pl_total('2008-01-01', '150', '서울역(150)', '승차', @result);
+
+SELECT @result
+```
