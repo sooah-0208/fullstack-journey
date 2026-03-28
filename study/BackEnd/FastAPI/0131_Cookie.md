@@ -147,7 +147,7 @@ axios.get('http://localhost:8000/me',{
 - `const [cookies, setCookie, removeCookie] = useCookies(['token']);`
   - `cookies`: 현재 브라우저에 있는 쿠키 값(state라고 생각하면 됨)
   - `setCookie`: 쿠키 생성하거나 수정 하는 함수
-                 함수를 여러번 사용하여 다양한 이름의 쿠키를 생성할 수도 있음 
+                 함수를 여러번 사용하여 다양한 이름의 쿠키를 생성할 수도 있음 `
                  `path:'/'`로 지정하지 않으면 현재 접속해있는 페이지에서 쿠키를 생성해버려 전체에서 못 읽을 수 있음
   - `removeCookie`: 쿠키 지우는 함수
                     path가 반드시 생성때와 동일해야함
