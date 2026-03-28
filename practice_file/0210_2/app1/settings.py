@@ -1,0 +1,34 @@
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+class Settings(BaseSettings):
+  # kafka_topic: str = "test"
+  # kafka_server: str = "kafka:9092"
+  # redis_host: str = "redis"
+  # redis_port: int = 6379
+  # redis_db: int = 0
+  # mariadb_user: str
+  # mariadb_password: str
+  # mariadb_host: str
+  # mariadb_database: str
+  # mariadb_port: int
+  # react_url: str
+  # secret_key: str
+  # algorithm: str
+  # access_token_expire_minutes: int
+  kakao_rest_api_key:str
+  kakao_client_secret:str
+  kakao_redirect_uri:str
+  kakao_authorize_url:str
+  kakao_token_url:str
+  kakao_user_info_url:str
+
+
+  
+
+  model_config = SettingsConfigDict(
+    env_file=".env",
+    env_file_encoding="utf-8",
+    extra= "ignore"
+  )
+
+settings = Settings()

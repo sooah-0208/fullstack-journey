@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: fastapi
+
+spec:
+  containers:
+    - name: fastapi
+      image: backend
+      # kubernets 이미지 정책상 docker hub에 없는 파일이면 이미지 다운이 안됨
+      # 아래 명령어 = 이미지가 로컬에 없는 경우에만 내려받는다.
+      imagePullPolicy: IfNotPresent
+      ports:
+        - containerPort: 8000

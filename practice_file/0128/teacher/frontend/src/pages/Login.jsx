@@ -1,0 +1,57 @@
+import axios from "axios"
+
+//“백엔드(FastAPI)랑 통신할 기본 세팅을 미리 만들어두는 axios 인스턴스
+const api = axios.create({ //axios설정을 api라는 변수에 넣음 각 method마다 아래 내용 안 넣게 하기위해
+  baseURL: "http://localhost:8000", //api.post에 일일히 넣지 않기 위해 base로 깔아둠
+  withCredentials: true, //쿠키를 주고받을것이냐 True
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
+
+const Login = () => {
+  const submitEvent = e => {
+    e.preventDefault()
+
+    const params = {
+      "email": e.target.email.value,
+      "pwd": e.target.pwd.value
+    } 
+    api.post("/login", params)
+    .then(res => console.log(res))
+    .catch(err => console.error(err))
+
+  }
+  const checkEvent = () => {
+
+    api.get("http://localhost:8000/user")
+    .then(res => console.log(res))
+    .catch(err => console.error(err))
+
+  }
+  return (
+    <div className="container mt-3">
+			<h1 className="display-1 text-center">로그인</h1>
+			<form onSubmit={submitEvent}>
+				<div className="mb-3 mt-3">
+					<label htmlFor="email" className="form-label">이메일</label>
+					<input type="email" className="form-control" id="email" placeholder="이메일를 입력하세요." name="email" required={true} autoComplete="off" />
+				</div>
+				<div className="mb-3">
+					<label htmlFor="pwd" className="form-label">비밀번호</label>
+					<input type="password" className="form-control" id="pwd" placeholder="비밀번호를 입력하세요." name="pwd" required={true} autoComplete="off" />
+				</div>
+        <div className="d-flex">
+          <div className="p-2 flex-fill d-grid">
+            <button type="submit" className="btn btn-primary">로그인</button>
+          </div>
+          <div className="p-2 flex-fill d-grid">
+            <button type="button" className="btn btn-primary" onClick={checkEvent}>취소</button>
+          </div>
+        </div>
+			</form>
+		</div>
+  )
+}
+
+export default Login
