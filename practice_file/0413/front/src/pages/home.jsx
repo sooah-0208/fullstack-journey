@@ -11,7 +11,7 @@ function Home({ posts, loadingPost, loading }) {
   const submitEvent = async (e) => {
     e.preventDefault()
     if (!prompt) return
-    
+
     Swal.fire({
       title: "따봉너구리🦝:",
       text: "열심히 게시글을 쓰고 있다구리...",
@@ -23,15 +23,25 @@ function Home({ posts, loadingPost, loading }) {
 
     try {
       const res = await api.post("/db/insert", { user_input: prompt })
+      Swal.close();
       if (!res.data.status) {
         Swal.fire({
           title: "따봉너구리🦝:",
           text: res.data.message,
           icon: 'error',
           confirmButtonText: "알앗다구리"
-        }).then((result) => {
-          if (result.isConfirmed) setPrompt("")
-        })        
+        })
+        setPrompt("")
+      }
+      else {
+        Swal.fire({
+          title: "따봉너구리🦝:",
+          text: res.data.message,
+          icon: 'success',
+          confirmButtonText: "알앗다구리"
+        })
+        setPrompt("")
+        loadingPost()
       }
     } catch (err) {
       console.error("데이터 로딩 실패", err);
@@ -41,10 +51,6 @@ function Home({ posts, loadingPost, loading }) {
         icon: 'error',
         confirmButtonText: "재시도"
       });
-    } finally {
-      Swal.close();
-      setPrompt("");
-      loadingPost();
     }
   }
 

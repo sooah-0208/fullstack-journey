@@ -5,9 +5,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./front:/workspace
-      - ./frontend:/app
-      - /app/node_modules
+      - ./front/dist:/usr/share/nginx/html
+      - ./front/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - back
     networks:
@@ -15,36 +14,38 @@ services:
     restart: always
 
   back:
-    image: uv:1
+    image: uv:3
     container_name: back
     environment:
-      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_BASE_URL=http://192.168.0.201:11434
       - MARIADB_USER=root
       - MARIADB_PASSWORD=1234
       - MARIADB_HOST=192.168.0.201
       - MARIADB_DATABASE=sooah_board
       - MARIADB_PORT=3306
-      - OLLAMA_MODEL_NAME=gemma4:e4b
+      - OLLAMA_MODEL_NAME=gemma3:4b
     ports:
       - "8001:8000"
     working_dir: /workspace
     volumes:
       - ./back:/workspace
-    depends_on:
-      - ollama
+    # depends_on:
+    #   - ollama
     networks:
       - app-network
     command: [ "uv", "run", "fastapi", "run", "--proxy-headers", "--forwarded-allow-ips", "'*'" ]
 
-  ollama:
-    image: ollama/ollama:latest
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    networks:
-      - app-network
-    restart: always
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   ports:
+  #     - "11434:11434"
+  #   environment:
+  #     - OLLAMA_HOST=0.0.0.0
+  #   volumes:
+  #     - D:\IDE\shellfolder\.ollama:/root/.ollama
+  #   networks:
+  #     - app-network
+  #   restart: always
 
 networks:
   app-network:
