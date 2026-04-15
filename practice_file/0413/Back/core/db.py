@@ -1,10 +1,12 @@
+from core.settings import settings
 import mariadb
 
 conn_params = {
-  "user": "root",
-  "password": "1234",
-  "host": "192.168.0.201",
-  "port" : int(3306)
+  "user": settings.mariadb_user,
+  "password": settings.mariadb_password,
+  "host": settings.mariadb_host,
+  "port" : settings.mariadb_port,
+  "database": settings.mariadb_database
 }
 
 def getConn():

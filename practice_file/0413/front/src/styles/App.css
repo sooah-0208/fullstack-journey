@@ -232,3 +232,52 @@
   cursor: pointer;
   font-weight: 600;
 }
+
+/* 박스 내 스피너 레이아웃 */
+.card-with-spinner {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+  background-color: rgba(255, 255, 255, 0.05); /* 어두운 배경에 맞춘 투명도 */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 15px;
+}
+
+/* 개별 미니 스피너 스타일 🌀 */
+.mini-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid #3498db; /* 강조색 */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+/* 스켈레톤 텍스트 배경 애니메이션 (Shimmer 효과 추가) 🏗️ */
+.skeleton-title, .skeleton-line {
+  background: linear-gradient(90deg, #1a1a2e 25%, #2a2a4e 50%, #1a1a2e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-title { height: 18px; width: 40%; margin-bottom: 10px; }
+.skeleton-line { height: 12px; width: 80%; }
+
+/* 애니메이션 정의 */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 경고메세지 */
+.alert-message {
+  white-space: pre-wrap;
+}

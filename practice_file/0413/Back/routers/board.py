@@ -10,9 +10,9 @@ router = APIRouter(
 @router.get("/")
 async def get_posts():
     conn = getConn()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM board")
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM board ORDER BY id DESC")
     posts = cursor.fetchall()
     cursor.close()
     conn.close()
-    return {"status":True, "message": "게시글 목록을 조회합니다.", "data": posts}
+    return {"status":True, "data": posts}

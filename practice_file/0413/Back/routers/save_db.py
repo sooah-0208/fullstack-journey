@@ -1,3 +1,4 @@
+from core.settings import settings
 import ollama
 from core.db import getConn
 from fastapi import APIRouter, HTTPException
@@ -16,13 +17,13 @@ async def db_init(request: UserInput):
     user_input = request.user_input
     system_context = """
    너는 MariaDB 전문가야. 사용자의 요구사항을 분석해서 SQL만 출력해.
-    - 데이터베이스가 없으면: CREATE DATABASE IF NOT EXISTS [DB명];
-    - 테이블이 없으면: USE [DB명]; CREATE TABLE IF NOT EXISTS [테이블명] (...);
+    - 사용자 입력값에 DB명이 있으면: CREATE DATABASE IF NOT EXISTS [DB명];
+    - 사용자 입력값에 테이블명이 있으면: USE [DB명]; CREATE TABLE IF NOT EXISTS [테이블명] (...);
     - 반드시 SQL 문장 끝에 세미콜론(;)을 붙여.
     - SQL 외의 설명(말대답)은 절대 하지 마.
     """
     try:
-        response = ollama.chat(model='gemma4:e4b', messages=[
+        response = ollama.chat(model=settings.ollama_model_name, messages=[
             {'role': 'system', 'content': system_context},
             {'role': 'user', 'content': user_input}])
         sql = response['message']['content']
@@ -68,6 +69,9 @@ async def db_insert(request: UserInput):
             {'role': 'system', 'content': system_context},
             {'role': 'user', 'content': user_input}])
         sql = response['message']['content']
+        check_keywords = ['INSERT', 'UPDATE', 'DELETE']
+        if not any(keyword in sql.upper() for keyword in check_keywords):
+            return {"status": False, "message": "아 나한테는 좀 어렵다구리. 이렇게 써달라구리. \n (예: 제목, 내용, 작성자 포함)"}
         conn = getConn()
         clean_sql = sql.replace("```sql","").replace("```","").strip()
         cursor = conn.cursor()
@@ -80,7 +84,7 @@ async def db_insert(request: UserInput):
         conn.commit()
         cursor.close()
         conn.close()
-        return {"status":True, "message":"게시글 수정에 성공했습니다."}
+        return {"status":True, "message":"아 성공이다구리구리~~!~!"}
     except Exception as e:
         print(f"오류 발생 : {e}")
         return {"status": False, "message": str(e)}
