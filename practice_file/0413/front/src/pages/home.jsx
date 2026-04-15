@@ -11,19 +11,19 @@ function Home({ posts, loadingPost, loading }) {
   const submitEvent = async (e) => {
     e.preventDefault()
     if (!prompt) return
+    
+    Swal.fire({
+      title: "따봉너구리🦝:",
+      text: "열심히 게시글을 쓰고 있다구리...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
     try {
       const res = await api.post("/db/insert", { user_input: prompt })
-      if (res.data.status) {
-        Swal.fire({
-          title: "따봉너구리🦝:",
-          text: res.data.message,
-          icon: 'success',
-          confirmButtonText: "알앗다구리"
-        })
-        setPrompt("")
-        await loadingPost()
-      }
-      else {
+      if (!res.data.status) {
         Swal.fire({
           title: "따봉너구리🦝:",
           text: res.data.message,
@@ -31,12 +31,20 @@ function Home({ posts, loadingPost, loading }) {
           confirmButtonText: "알앗다구리"
         }).then((result) => {
           if (result.isConfirmed) setPrompt("")
-        })
+        })        
       }
     } catch (err) {
       console.error("데이터 로딩 실패", err);
+      Swal.fire({
+        title: "따봉너구리🦝:",
+        text: "데이터 전송에 실패했다구리",
+        icon: 'error',
+        confirmButtonText: "재시도"
+      });
     } finally {
-      loadingPost()
+      Swal.close();
+      setPrompt("");
+      loadingPost();
     }
   }
 
@@ -68,11 +76,23 @@ function Home({ posts, loadingPost, loading }) {
         <header className="header">
           <h1>자유 게시판</h1>
         </header>
-        <form onSubmit={submitEvent}>
-          <input className="agent_input" type="text" value={prompt} onChange={e => setPrompt(e.target.value)}
-            placeholder="게시글을 입력하세요. ex) 내 이름은 수아야. AI란 이라는 제목으로 글 써줘. 내용은 지배할 것이다. 라고 써줘" />
-          <button type="submit">전송</button>
-        </form>
+        <div className="agent-container">
+          <div className="agent-header">
+            <div className="agent-avatar">🦝</div>
+            <span>따봉너구리에게 게시글 작성 명령하기</span>
+          </div>
+          <textarea
+            className="agent-input"
+            placeholder="게시글을 입력하세요. ex) 내 이름은 수아야. AI란 이라는 제목으로 글 써줘. 내용은 지배할 것이다. 라고 써줘 (Enter로 전송)"
+            value={prompt}
+            onChange={e => setPrompt(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                submitEvent(e);
+              }
+            }}
+          />
+        </div>
         {
           posts?.length === 0 ? (
             <div className="empty-state">

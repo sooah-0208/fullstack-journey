@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_APP_FASTAPI_URL || "http://localhost:8000",
+  baseURL: "http://aiedu.tplinkdns.com:6100",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

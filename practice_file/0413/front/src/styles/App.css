@@ -59,8 +59,8 @@
 
 .clickable:hover {
   transform: translateY(-4px);
-  background: rgba(40, 50, 70, 0.8);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: var(--accent-color);
+  border-color: var(--border-color);
 }
 
 .post-header {
@@ -101,8 +101,8 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.85rem;
-  color: #64748b;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
   padding-top: 1rem;
 }
 
@@ -139,11 +139,11 @@
 }
 
 .detail-meta {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.9rem;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .detail-body {
@@ -154,11 +154,12 @@
 
 /* Agent Interface styles */
 .agent-container {
-  background: linear-gradient(145deg, #2e3b70, #252f5a);
+  background: linear-gradient(145deg, #FFD8DF, #FFAAB8);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(100, 150, 255, 0.2);
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 .agent-header {
@@ -167,7 +168,7 @@
   gap: 0.75rem;
   margin-bottom: 1rem;
   font-weight: 600;
-  color: #c7d2fe;
+  color: var(--text-primary);
 }
 
 .agent-avatar {
@@ -177,11 +178,11 @@
 .agent-input {
   width: 100%;
   box-sizing: border-box;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 1rem;
-  color: white;
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 0.95rem;
   resize: vertical;
@@ -190,8 +191,8 @@
 }
 
 .agent-input:focus {
-  border-color: var(--accent-color);
-  background: rgba(0, 0, 0, 0.3);
+  border-color: var(--accent-hover);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 /* Edit form */
@@ -204,11 +205,11 @@
 .edit-input, .edit-textarea {
   width: 100%;
   box-sizing: border-box;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 1rem;
-  color: white;
+  color: var(--text-primary);
   font-family: inherit;
 }
 
@@ -225,7 +226,7 @@
 .save-btn {
   align-self: flex-end;
   background: var(--accent-color);
-  color: white;
+  color: var(--text-primary);
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -239,8 +240,8 @@
   align-items: center;
   padding: 20px;
   gap: 20px;
-  background-color: rgba(255, 255, 255, 0.05); /* 어두운 배경에 맞춘 투명도 */
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.5); /* 어두운 배경에 맞춘 투명도 */
+  border: 1px solid var(--border-color);
   margin-bottom: 15px;
 }
 
@@ -248,8 +249,8 @@
 .mini-spinner {
   width: 24px;
   height: 24px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top: 3px solid #3498db; /* 강조색 */
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top: 3px solid var(--accent-hover); /* 강조색 */
   border-radius: 50%;
   animation: spin 1s linear infinite;
   flex-shrink: 0;
@@ -257,7 +258,7 @@
 
 /* 스켈레톤 텍스트 배경 애니메이션 (Shimmer 효과 추가) 🏗️ */
 .skeleton-title, .skeleton-line {
-  background: linear-gradient(90deg, #1a1a2e 25%, #2a2a4e 50%, #1a1a2e 75%);
+  background: linear-gradient(90deg, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 4px;

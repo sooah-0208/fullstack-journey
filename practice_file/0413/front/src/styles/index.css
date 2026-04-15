@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg-dark: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.6);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --accent-color: #3b82f6;
-  --accent-hover: #2563eb;
-  --border-color: rgba(255, 255, 255, 0.1);
+  --bg-dark: #F0FFDF;
+  --bg-card: #FFD8DF;
+  --text-primary: #885858;
+  --text-secondary: #7a5151;
+  --accent-color: #A8DF8E;
+  --accent-hover: #FFAAB8;
+  --border-color: rgba(0, 0, 0, 0.1);
   font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: dark light;
+  color-scheme: light;
   color: var(--text-primary);
   background-color: var(--bg-dark);
 }
@@ -22,6 +22,6 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background: radial-gradient(circle at top right, #1e1b4b, var(--bg-dark) 40%, var(--bg-dark) 100%);
+  background: radial-gradient(circle at top right, #A8DF8E, var(--bg-dark) 40%, var(--bg-dark) 100%);
   background-attachment: fixed;
 }

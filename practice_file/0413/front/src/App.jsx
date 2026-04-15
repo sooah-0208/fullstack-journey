@@ -15,6 +15,7 @@ function App() {
       // 게시글 목록 조회
       const res = await api.get("/board")
       if (res.data.status) {
+        console.log(res.data)
         setPosts(res.data.data)
       }
     } catch (err) {
@@ -28,11 +29,33 @@ function App() {
     loadingPost()
   }, [])
 
+  const updatePost = async (id, title, content) => {
+    try {
+      const res = await api.put(`/board/${id}`, { title, content });
+      if (res.data.status) {
+        setPosts(posts.map(p => Number(p.id) === Number(id) ? { ...p, title, content } : p));
+      }
+    } catch (err) {
+      console.error("수정 실패", err);
+    }
+  };
+
+  const deletePost = async (id) => {
+    try {
+      const res = await api.delete(`/board/${id}`);
+      if (res.data.status) {
+        setPosts(posts.filter(p => Number(p.id) !== Number(id)));
+      }
+    } catch (err) {
+      console.error("삭제 실패", err);
+    }
+  };
+
   return (
     <div className="app-main">
       <Routes>
         <Route path="/" element={<Home posts={posts} loadingPost={loadingPost} loading={loading} />} />
-        <Route path="/board/:id" element={<BoardList posts={posts} />} />
+        <Route path="/board/:id" element={<BoardList posts={posts} updatePost={updatePost} deletePost={deletePost} />} />
       </Routes>
     </div>
   );

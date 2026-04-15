@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 
 function BoardList({ posts, deletePost, updatePost }) {
@@ -23,6 +24,12 @@ function BoardList({ posts, deletePost, updatePost }) {
 
       if (inputTrimmed.includes('삭제')) {
         deletePost(post.id);
+        Swal.fire({
+                  title: "따봉너구리🦝:",
+                  text: "게시글은 따봉 너구리가 처리햇다굿-!",
+                  icon: 'success',
+                  confirmButtonText: "알앗다구리"
+                })
         navigate('/');
       } else if (inputTrimmed.includes('수정')) {
         setIsEditing(true);
@@ -68,7 +75,8 @@ function BoardList({ posts, deletePost, updatePost }) {
           <>
             <h1 className="detail-title">{post.title}</h1>
             <div className="detail-meta">
-              <span>{post.author}</span> • <span>{post.date}</span>
+              <span>{post.user_name}</span>
+              <span>{post.date}</span>
             </div>
             <div className="detail-body">
               {post.content}
@@ -80,8 +88,8 @@ function BoardList({ posts, deletePost, updatePost }) {
       {/* Agent Interface */}
       <div className="agent-container">
         <div className="agent-header">
-          <div className="agent-avatar">🤖</div>
-          <span>AI Agent에게 명령하기</span>
+          <div className="agent-avatar">🦝</div>
+          <span>따봉너구리에게 명령하기</span>
         </div>
         <textarea
           className="agent-input"

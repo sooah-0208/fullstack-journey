@@ -6,7 +6,9 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "http://aiedu.tplinkdns.com/:0000",
+    "http://localhost:6100",
+    "http://aiedu.tplinkdns.com",
+    "http://aiedu.tplinkdns.com:6100",
 ]
 app.add_middleware(
     CORSMiddleware,
