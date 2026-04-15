@@ -5,8 +5,8 @@ from routers import save_db, board
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173",
-    "http://localhost:6100",
+    "http://localhost",
+    "http://localhost:80",
     "http://aiedu.tplinkdns.com",
     "http://aiedu.tplinkdns.com:6100",
 ]

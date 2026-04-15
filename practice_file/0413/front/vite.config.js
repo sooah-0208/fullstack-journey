@@ -8,8 +8,8 @@ export default defineConfig({
     base: "/",
   server: {
     host: '0.0.0.0',
-    port: 5173,
-    allowedHosts: ['localhost', 'app1', 'quadecologics.cloud', 'aiedu.tplinkdns.com'],
+    port: 80,
+    allowedHosts: ['localhost', 'aiedu.tplinkdns.com'],
   },
   resolve: {
     alias: {

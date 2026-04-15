@@ -1,12 +1,13 @@
-version: '3.8'
-
 services:
   front:
-    build:
-      context: ./front
-      dockerfile: Dockerfile
+    image: nginx:1.28
+    container_name: front
     ports:
       - "80:80"
+    volumes:
+      - ./front:/workspace
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
       - back
     networks:
@@ -14,16 +15,26 @@ services:
     restart: always
 
   back:
-    build:
-      context: ./back
-      dockerfile: Dockerfile
+    image: uv:1
+    container_name: back
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - MARIADB_USER=root
+      - MARIADB_PASSWORD=1234
+      - MARIADB_HOST=192.168.0.201
+      - MARIADB_DATABASE=sooah_board
+      - MARIADB_PORT=3306
+      - OLLAMA_MODEL_NAME=gemma4:e4b
     ports:
-      - "6100:8000"
+      - "8001:8000"
+    working_dir: /workspace
+    volumes:
+      - ./back:/workspace
     depends_on:
       - ollama
     networks:
       - app-network
-    restart: always
+    command: [ "uv", "run", "fastapi", "run", "--proxy-headers", "--forwarded-allow-ips", "'*'" ]
 
   ollama:
     image: ollama/ollama:latest
