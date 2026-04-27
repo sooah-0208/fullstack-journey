@@ -1,13 +1,12 @@
 import mariadb
+import settings
 
 # ------------------
 # 연결방식1
 # ------------------
-settings.mariadbUrl="mariadb://root:1234@aiedu.tplinkdns.com/edu" #env 관리
-
 def getConn():
   try:
-    with mariadb.connect(settings.mariadbUrl) as conn:
+    with mariadb.connect(settings.maria_db_url) as conn:
       if conn == None:
         return None
       return conn
@@ -21,11 +20,11 @@ def getConn():
 
 # env 관리
 conn_params = {
-  "user": "root",
-  "password": "1234",
-  "host": "aiedu.tplinkdns.com",
-  "database" : "edu",
-  "port" : int(55306)
+  "user": settings.maria_db_user,
+  "password": settings.maria_db_password,
+  "host": settings.maria_db_host,
+  "database" : settings.maria_db_database,
+  "port" : settings.maria_db_port
 }
 
 def getConn():
@@ -40,7 +39,170 @@ def getConn():
 
 
 # ------------------
-# 연결방식3 SQLAlchemy
+# 연결방식3 SQLAlchemy -> ORM 방식 안 쓰기로 해서 기각함
 # ------------------
 from sqlalchemy import create_password_url, create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+
+# --------------------------
+# 하나만 불러오기
+# --------------------------
+def findOne(sql):
+  result = None
+  try:
+    conn = getConn()
+    if conn:
+      cur = conn.cursor()
+      cur.execute(sql)
+      row = cur.fetchone()
+      columns = [desc[0] for desc in cur.description]
+      cur.close()
+      conn.close()
+      result = dict(zip(columns, row)) if row else None
+  except mariadb.Error as e:
+    print(f"MariaDB Error : {e}")
+  return result
+
+# --------------------------
+# 모두 불러오기
+# --------------------------
+def findAll(sql):
+  result = []
+  try:
+    conn = getConn()
+    if conn:
+      cur = conn.cursor()
+      cur.execute(sql)
+      rows = cur.fetchall()
+      columns = [desc[0] for desc in cur.description]
+      cur.close()
+      conn.close()
+      result = [dict(zip(columns, row)) for row in rows]
+  except mariadb.Error as e:
+    print(f"MariaDB Error : {e}")
+  return result
+
+# --------------------------
+# DB에 저장하기
+# --------------------------
+def save(sql):
+  result = False
+  try:
+    conn = getConn()
+    if conn:
+      cur = conn.cursor()
+      cur.execute(sql)
+      conn.commit()
+      cur.close()
+      conn.close()
+      result = True
+  except mariadb.Error as e:
+    print(f"MariaDB Error : {e}")
+  return result
+
+# --------------------------
+# 여러 값 저장하기
+# --------------------------
+def saveMany(sql2: str, values):
+  result = False
+  try:
+    conn = getConn()
+    if conn:
+      cur = conn.cursor()
+    #   cur.execute(sql1)
+      cur.executemany(sql2, values)
+      conn.commit()
+      cur.close()
+      conn.close()
+      result = True
+  except mariadb.Error as e:
+    print(f"MariaDB Error : {e}")
+  return result
+# 사용 예시
+"""
+sql = "INSERT INTO students (name, score) VALUES (?, ?)"
+data_values = [
+    ('최수아', 99),
+    ('이현서', 00),
+    ('최윤우', 98)
+]
+result = saveMany(sql, data_values)
+"""
+
+# --------------------------
+# 직전에 넣은 키값 불러오기
+# --------------------------
+def add_key(sql):
+  result = [False, 0]
+  try:
+    conn = getConn()
+    if conn:
+      cur = conn.cursor(dictionary=True)
+      cur.execute(sql)
+      sql2 = "SELECT LAST_INSERT_ID() as no"
+      cur.execute(sql2)
+      row = cur.fetchone()
+      columns = [desc[0] for desc in cur.description]
+      data = dict(zip(columns, row)) if row else None      
+      conn.commit()
+      cur.close()
+      conn.close()
+      result[0] = True
+      if data:
+        result[1] = data["no"]
+  except mariadb.Error as e:
+    print(f"MariaDB Error : {e}")
+  return result
+
+# --------------------------
+# 데이터 존재 여부 확인
+# --------------------------
+def exists(sql, params):
+    result = False
+    try:
+        conn = getConn()
+        if conn:
+            cur = conn.cursor()
+            cur.execute(sql, params)
+            # 결과가 0보다 크면 존재하는 것
+            count = cur.fetchone()[0]
+            result = True if count > 0 else False
+            cur.close()
+            conn.close()
+    except mariadb.Error as e:
+        print(f"MariaDB Error : {e}")
+    return result
+
+# 사용 예시
+'''
+is_joined = exists("SELECT COUNT(*) FROM users WHERE email = ?", ("test@test.com",))
+if is_joined:
+    print("이미 가입된 이메일입니다.")
+'''
+
+# --------------------------
+# 페이지네이션 목록
+# --------------------------
+def getPageList(sql, limit, offset):
+    result = {"total": 0, "list": []}
+    try:
+        conn = getConn()
+        if conn:
+            cur = conn.cursor(dictionary=True)
+            # 1. 전체 개수 파악 (페이지 번호 계산용)
+            count_sql = f"SELECT COUNT(*) as cnt FROM ({sql}) as temp"
+            cur.execute(count_sql)
+            result["total"] = cur.fetchone()["cnt"]
+            
+            # 2. 실제 페이지 데이터 조회
+            paging_sql = sql + " LIMIT %s OFFSET %s"
+            cur.execute(paging_sql, (limit, offset))
+            result["list"] = cur.fetchall()
+            cur.close()
+            conn.close()
+    except mariadb.Error as e:
+        print(f"MariaDB Error : {e}")
+    return result
+# limit = 보여줄 개수, offset = 건너뛸 개수
+
+## 공통화 할 수 있는 부분 체크, 함수화 할 수 있는지 체크해서 수정하기
