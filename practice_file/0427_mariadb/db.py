@@ -38,9 +38,9 @@ def getConn():
     return None
 
 
-# ------------------
+# --------------------------
 # 연결방식3 SQLAlchemy -> ORM 방식 안 쓰기로 해서 기각함
-# ------------------
+# --------------------------
 from sqlalchemy import create_password_url, create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 

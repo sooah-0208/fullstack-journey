@@ -142,3 +142,136 @@ java로 결정
 -> 플랫폼에서 관리하지 않을 부분이라 생각
 가입시키고 메일 공유는 회사간에서 해결.
 이후 가입한 메일에 초대 하면 이부분은 메일발송(only승락해달라는 알람만) or 알림창에 띄워줌.
+
+----
+
+# 0428
+
+## TrobleShooting
+
+1) 주석
+```
+# --------------------------
+# 컨슈머 시작
+# --------------------------
+def startConsumer():
+    """컨슈머 시작 함수"""
+    emailThread = threading.Thread(target=runEmailConsumer, daemon=True)
+    emailThread.start() # 추가주석 있을 시
+```
+- 가독성을 위하여 주석 ---로 구분
+- utils에서 함수 추출사용시 함수 설명 확인 위해 """컨슈머 시작 함수""" 포함
+
+----
+
+- savefile
+회원가입시 // 사업자등록증 front에서 물고있다가 가입할 때 저장이 안됨 지금
+OCR을 백에서 해야해서
+그럼 redis에 임시저장을 할지, db에 임시저장 테이블을 파고 삭제하는 로직을 짤지
+=> 임시저장 x, file에 무조건 저장, 삭제 안 함 -> 
+**Troble Shooting**
+- OCR 로직이 front 담당에서 back으로 넘어옴 -> 파일을 저장해야만 OCR이 가능 -> DB에 임시저장 테이블을 만들지 저장하고 삭제할지, 쭉 쌓을지 논의 -> 사용자 정보는 최대한 미삭제하는 쪽으로 협의, 쭉 쌓는 방향으로 fix함 ->
+COMPANY T에 회원가입 될 테니 그걸로 조회하면 됨
+(미사용 파일을 스케줄돌려서 특정 기간 지나면 지우는 로직 세울수 있고, 아니면 압축해서 백업할 수 있음)
+이 부분은 추후 고도화를 할지, 바로 실행할지 고려사항
+
+---
+
+- token 생성시 
+uuid를 내부에 생성함 -> uuid를 accesse token생성시 생성 -> redis key로 사용 -> db에 redis uuid 저장 => access_token만들때마다 uuid 업데이트 하기로함 그럼 db에 어케 저장? -> redis에 access_token, uuid 저장
+**Troble Shooting**
+JWE, 알고리즘: AES256-GCM(A256GCM)
+2. 왜 AES-GCM을 사용할까? (발표용 핵심 이유)
+기밀성과 무결성 동시 보장: 데이터를 숨기는 것(Encryption)뿐만 아니라, 누군가 데이터를 미세하게 수정했는지(Integrity)를 암호학적으로 즉시 판별할 수 있습니다.
+
+표준 보안: Google, Cloudflare 등 글로벌 기술 기업들이 표준으로 사용하는 가장 안전하고 빠른 대칭키 암호화 방식입니다.
+효율성: 하드웨어 가속 기능을 활용할 수 있어, 암/복호화 과정에서 서버 부하가 매우 적습니다.
+
+---
+
+- db.py에 
+1. findOne, findAll, save, saveMany, add_key, exists, 페이지네이션 이렇게 있는데 더 필요한게 있는지?
+2. 테스트 sql문 예시로 내가 써둬야하는지
+**Troble Shooting**
+1. url연결방식(mariadb.connect(settings.maria_db_url))은 mariadb에서 읽지 못하여 기존방식(conn_parmas)선정
+2. with 사용시 블록 끝나면 바로 세션 종료가 됨 -> 현재는 각 함수에서 conn연결을 하지 않고 함수화하였기때문에 getConn()에서 with 사용하지 않기로 함
+
+---
+
+- redis
+1. redis에 담을 key value fix
+2. token만들건지, 받을건지
+만약 만든다면 BaseModel fix
+3. redis 사용을 어디어디 할지
+
+---
+
+- kafka
+email 쓸 때 uuid 생성을 해야하는지, redis&token 
+메일 4가지 fastapi로 보내는거 config 이 폴더에 둘건지 나눌지
+kafka 순서: pd, cs // redis저장이 우선, redis uuid 읽어옴 
+cs 요청 들어올 경우 redis key: uuid 읽어서 email보낸다?
+
+---
+---
+
+# 0429
+**Troble shooting**
+- `models/auth.py`, `apis/auth.py` 로직 확정안
+1) `models/auth.py` return 값을 only boolen만 주는 경우  
+2) `models/auth.py`에 모든 생성로직을 넣고 `apis/auth.py`에는 결과값만 반환
+1안을 선택할 경우  
+sql문이 들어가는 로직 -> models/  
+그 외의 생성로직 -> apis/  
+2안을 선택할 경우 
+모든 생성로직, DB 찍고오는 로직 -> models/
+models/에서 만든 함수만 작성 -> apis/
+
+- router list 추가 자동화로직 추가
+현재 apis/에 py가 여러개있는데 거기서 라우터를 생성할 때 마다 수동으로 list에 include.router를 해줘야함  
+이걸 자동화하는 로직 생성  
+파일위치: `backend/src/apis/fastset.py`의 for문으로 생성함.  
+
+- 로그인 로직 순서 변경
+원래 redis 저장->front전달->db저장 순이었음  
+이 로직을 쓸 경우 redis에는 저장되었으나 db저장시 오류가 나는 경우 생길 수 있음  
+=> db저장 후 redis -> front로 전달하는 순서로 변경함
++) 추가적인 수정사항  
+try문 사용하여 둘중에 하나만 저장될 경우를 막음. 둘중에 하나라도 실패하면 다 실패응답주도록 + 트랜젝션 롤백처리
+
+- 공통 Response 구조 수정
+Discussion # 29 참고  
+1. request_id 삭제
+응답에서 request_id가 필요가 없음    
+=> front에서 respones가 와서 back에서 로그에 쌓아야 함  
+2. 실패응답 status만 전달  
+로그에 찍히는 code가 실패응답과는 관련이 없어 단순 성공/실패 여부만 전달함  
+
+- token claim 규정
+현재 커스텀으로 iss, sub 없이 하고있었음  
+규정 확인 후 iss는 생략한 특별한 이유가 없기에 `withProject`로 추가하기로 함.
+규정은 
+- `iss` (Issuer): 토큰 발급자
+- `sub` (Subject): 토큰 제목 (사용자 ID 등)
+- `aud` (Audience): 토큰 대상자
+- `exp` (Expiration): 토큰 만료 시간
+- `iat` (Issued At): 토큰 발급 시간
+가 기본적으로 들어가야함
+왜 커스텀했는지? => aud는 이용자가 권한이 바뀔 수 있어서 값을 정하지 않음 -> WHY? accessToken이 있는 와중에 권한 변경이 일어나면 권한 변경점이 저장이 안됨  
+
+
+## FRONT 로그인 요청사항
+
+로그인하면 회사선택페이지로 이동(이부분을 프론트에서 체크) -> 온보딩에서 권한 체크
+
+첫 로그인할때 front에서 필요한 정보
+
+uuid
+COMPANY T company_name
+USER T email
+USER_ROLE role_id
+
++ 회사 선택시마다 API 요청 필요
+내가 가진 권한 체크해줘야함(USER_ROLE 전체)
+
+
